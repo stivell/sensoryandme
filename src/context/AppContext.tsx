@@ -1,0 +1,78 @@
+import React, { createContext, useState, useContext, ReactNode } from 'react';
+import { Class, Location } from '../types';
+import { mockClasses, mockLocations } from '../data/mockData';
+
+interface AppContextProps {
+  classes: Class[];
+  locations: Location[];
+  userEmail: string | null;
+  setUserEmail: (email: string | null) => void;
+  isNewsletterSubscribed: boolean;
+  setIsNewsletterSubscribed: (value: boolean) => void;
+  newsletterEmail: string;
+  setNewsletterEmail: (email: string) => void;
+  filteredClasses: Class[];
+  filterClasses: (locationId?: string, ageGroup?: string, dateRange?: [Date, Date]) => void;
+  selectedClass: Class | null;
+  setSelectedClass: (classItem: Class | null) => void;
+}
+
+const AppContext = createContext<AppContextProps | undefined>(undefined);
+
+export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+  const [classes] = useState<Class[]>(mockClasses);
+  const [locations] = useState<Location[]>(mockLocations);
+  const [userEmail, setUserEmail] = useState<string | null>(null);
+  const [isNewsletterSubscribed, setIsNewsletterSubscribed] = useState<boolean>(false);
+  const [newsletterEmail, setNewsletterEmail] = useState<string>('');
+  const [filteredClasses, setFilteredClasses] = useState<Class[]>(mockClasses);
+  const [selectedClass, setSelectedClass] = useState<Class | null>(null);
+
+  const filterClasses = (locationId?: string, ageGroup?: string, dateRange?: [Date, Date]) => {
+    let result = [...classes];
+    
+    if (locationId) {
+      result = result.filter(c => c.locationId === locationId);
+    }
+    
+    if (ageGroup) {
+      result = result.filter(c => c.ageGroup === ageGroup);
+    }
+    
+    if (dateRange && dateRange.length === 2) {
+      result = result.filter(c => {
+        const classDate = new Date(c.date);
+        return classDate >= dateRange[0] && classDate <= dateRange[1];
+      });
+    }
+    
+    setFilteredClasses(result);
+  };
+
+  return (
+    <AppContext.Provider value={{
+      classes,
+      locations,
+      userEmail,
+      setUserEmail,
+      isNewsletterSubscribed,
+      setIsNewsletterSubscribed,
+      newsletterEmail,
+      setNewsletterEmail,
+      filteredClasses,
+      filterClasses,
+      selectedClass,
+      setSelectedClass,
+    }}>
+      {children}
+    </AppContext.Provider>
+  );
+};
+
+export const useAppContext = () => {
+  const context = useContext(AppContext);
+  if (context === undefined) {
+    throw new Error('useAppContext must be used within an AppProvider');
+  }
+  return context;
+};
