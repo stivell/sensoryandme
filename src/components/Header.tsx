@@ -1,12 +1,15 @@
 import { useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, Play } from 'lucide-react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Menu, X, Play, UserCircle } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { supabase } from '../lib/supabase';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [user, setUser] = useState(null);
   const location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -22,6 +25,27 @@ const Header = () => {
   useEffect(() => {
     setIsMenuOpen(false);
   }, [location]);
+
+  useEffect(() => {
+    // Get initial session
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setUser(session?.user ?? null);
+    });
+
+    // Listen for auth changes
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
+
+  const handleSignOut = async () => {
+    await supabase.auth.signOut();
+    navigate('/');
+  };
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -83,9 +107,28 @@ const Header = () => {
               {item.name}
             </Link>
           ))}
-          <Link to="/classes" className="btn-primary ml-4">
-            Book a Class
-          </Link>
+          {user ? (
+            <div className="flex items-center space-x-4">
+              <button
+                onClick={handleSignOut}
+                className="font-medium text-gray-800 hover:text-secondary-600"
+              >
+                Sign Out
+              </button>
+              <Link to="/classes" className="btn-primary">
+                Book a Class
+              </Link>
+            </div>
+          ) : (
+            <div className="flex items-center space-x-4">
+              <Link to="/login" className="font-medium text-gray-800 hover:text-secondary-600">
+                Sign In
+              </Link>
+              <Link to="/signup" className="btn-primary">
+                Sign Up
+              </Link>
+            </div>
+          )}
         </nav>
 
         {/* Mobile Navigation Toggle */}
@@ -126,9 +169,28 @@ const Header = () => {
                   {item.name}
                 </Link>
               ))}
-              <Link to="/classes" className="btn-primary w-full text-center mt-4">
-                Book a Class
-              </Link>
+              {user ? (
+                <>
+                  <button
+                    onClick={handleSignOut}
+                    className="font-medium py-2 text-gray-800 hover:text-secondary-600 text-left"
+                  >
+                    Sign Out
+                  </button>
+                  <Link to="/classes" className="btn-primary w-full text-center">
+                    Book a Class
+                  </Link>
+                </>
+              ) : (
+                <>
+                  <Link to="/login" className="font-medium py-2 text-gray-800 hover:text-secondary-600">
+                    Sign In
+                  </Link>
+                  <Link to="/signup" className="btn-primary w-full text-center">
+                    Sign Up
+                  </Link>
+                </>
+              )}
             </div>
           </motion.div>
         )}

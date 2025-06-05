@@ -1,34 +1,79 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useAppContext } from '../context/AppContext';
 import BookingForm from '../components/BookingForm';
 import { Calendar, Clock, MapPin, Users, CheckCheck } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { supabase } from '../lib/supabase';
+import type { Class, Location } from '../types';
 
 const ClassDetailPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const { classes, locations, setSelectedClass } = useAppContext();
-  
-  const classItem = classes.find(c => c.id === id);
-  const location = classItem ? locations.find(l => l.id === classItem.locationId) : null;
+  const { setSelectedClass } = useAppContext();
+  const [classItem, setClassItem] = useState<Class | null>(null);
+  const [location, setLocation] = useState<Location | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
   
   useEffect(() => {
     window.scrollTo(0, 0);
     
-    if (!classItem) {
-      navigate('/404');
-    } else {
-      setSelectedClass(classItem);
-    }
+    const fetchClassDetails = async () => {
+      try {
+        if (!id) return;
+
+        const { data: classData, error: classError } = await supabase
+          .from('classes')
+          .select('*')
+          .eq('id', id)
+          .single();
+
+        if (classError || !classData) {
+          console.error('Error fetching class:', classError);
+          navigate('/404');
+          return;
+        }
+
+        setClassItem(classData);
+        setSelectedClass(classData);
+
+        const { data: locationData, error: locationError } = await supabase
+          .from('locations')
+          .select('*')
+          .eq('id', classData.location_id)
+          .single();
+
+        if (locationError || !locationData) {
+          console.error('Error fetching location:', locationError);
+          return;
+        }
+
+        setLocation(locationData);
+      } catch (error) {
+        console.error('Error:', error);
+        navigate('/404');
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchClassDetails();
     
     return () => {
       setSelectedClass(null);
     };
-  }, [classItem, navigate, setSelectedClass]);
+  }, [id, navigate, setSelectedClass]);
+  
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-secondary-600"></div>
+      </div>
+    );
+  }
   
   if (!classItem || !location) {
-    return null; // Will redirect in useEffect
+    return null;
   }
   
   // Format date
@@ -79,7 +124,7 @@ const ClassDetailPage: React.FC = () => {
             </div>
             
             <span className="inline-block bg-primary-500 text-white text-sm font-medium px-3 py-1 rounded-full mb-6">
-              Ages {classItem.ageGroup}
+              Ages {classItem.age_group}
             </span>
           </motion.div>
         </div>
@@ -96,7 +141,7 @@ const ClassDetailPage: React.FC = () => {
               >
                 <div className="mb-8 rounded-xl overflow-hidden shadow-md">
                   <img 
-                    src={classItem.imageUrl} 
+                    src={classItem.image_url} 
                     alt={classItem.title} 
                     className="w-full h-auto"
                   />
@@ -163,7 +208,7 @@ const ClassDetailPage: React.FC = () => {
                   className={classItem.title}
                   classDate={classItem.date}
                   classTime={classItem.time}
-                  price={classItem.price}
+                  price={Number(classItem.price)}
                 />
               </motion.div>
             </div>
