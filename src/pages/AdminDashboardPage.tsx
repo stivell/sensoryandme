@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
-import { Users, Calendar, AlertCircle } from 'lucide-react';
+import { Users, Calendar, AlertCircle, ShieldAlert } from 'lucide-react';
 
 interface UserWithBookings {
   id: string;
@@ -29,60 +29,89 @@ const AdminDashboardPage = () => {
   const [users, setUsers] = useState<UserWithBookings[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
     const checkAdminAccess = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      
-      if (!session) {
-        navigate('/login');
-        return;
-      }
+      try {
+        const { data: { session } } = await supabase.auth.getSession();
+        
+        if (!session) {
+          navigate('/login');
+          return false;
+        }
 
-      const { data: userData, error: userError } = await supabase
-        .from('users')
-        .select('role')
-        .eq('id', session.user.id)
-        .single();
+        const { data: userData, error: userError } = await supabase
+          .from('users')
+          .select('role')
+          .eq('id', session.user.id)
+          .single();
 
-      if (userError || userData?.role !== 'admin') {
-        navigate('/');
-        return;
+        if (userError || userData?.role !== 'admin') {
+          return false;
+        }
+
+        return true;
+      } catch (err) {
+        return false;
       }
     };
 
-    const fetchUsers = async () => {
+    const fetchData = async () => {
       try {
-        const { data, error } = await supabase
+        const isAdminUser = await checkAdminAccess();
+        setIsAdmin(isAdminUser);
+
+        if (!isAdminUser) {
+          setError('Unauthorized: Admin access required');
+          setIsLoading(false);
+          return;
+        }
+
+        // Fetch all users from public.users with their details
+        const { data: usersData, error: usersError } = await supabase
           .from('users')
+          .select('*')
+          .order('created_at', { ascending: false });
+
+        if (usersError) throw usersError;
+
+        // Fetch all bookings with class details
+        const { data: bookingsData, error: bookingsError } = await supabase
+          .from('bookings')
           .select(`
-            *,
-            bookings (
-              id,
-              child_name,
-              child_age,
-              payment_status,
-              created_at,
-              class:classes (
-                title,
-                date,
-                time
-              )
+            id,
+            child_name,
+            child_age,
+            payment_status,
+            created_at,
+            user_id,
+            class:classes (
+              title,
+              date,
+              time
             )
           `)
           .order('created_at', { ascending: false });
 
-        if (error) throw error;
-        setUsers(data || []);
+        if (bookingsError) throw bookingsError;
+
+        // Combine users with their bookings
+        const usersWithBookings = usersData.map(user => ({
+          ...user,
+          bookings: bookingsData.filter(booking => booking.user_id === user.id) || []
+        }));
+
+        setUsers(usersWithBookings);
       } catch (err) {
-        setError(err instanceof Error ? err.message : 'Failed to fetch users');
+        console.error('Error fetching data:', err);
+        setError(err instanceof Error ? err.message : 'Failed to fetch data');
       } finally {
         setIsLoading(false);
       }
     };
 
-    checkAdminAccess();
-    fetchUsers();
+    fetchData();
   }, [navigate]);
 
   if (isLoading) {
@@ -93,6 +122,32 @@ const AdminDashboardPage = () => {
     );
   }
 
+  if (!isAdmin) {
+    return (
+      <div className="min-h-screen pt-24 pb-12">
+        <div className="container-custom">
+          <div className="bg-error-50 border border-error-200 rounded-lg p-8 text-center">
+            <ShieldAlert className="h-16 w-16 text-error-500 mx-auto mb-4" />
+            <h2 className="text-2xl font-bold text-error-800 mb-2">Access Denied</h2>
+            <p className="text-error-600 mb-6">
+              You don't have permission to access the admin dashboard.
+            </p>
+            <button
+              onClick={() => navigate('/')}
+              className="btn-primary"
+            >
+              Return to Home
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  const totalBookings = users.reduce((sum, user) => sum + user.bookings.length, 0);
+  const totalParents = users.filter(user => user.role === 'parent').length;
+  const totalAdmins = users.filter(user => user.role === 'admin').length;
+
   return (
     <div className="min-h-screen pt-24 pb-12">
       <div className="container-custom">
@@ -101,8 +156,16 @@ const AdminDashboardPage = () => {
             <Users className="h-8 w-8 mr-3 text-secondary-600" />
             Admin Dashboard
           </h1>
-          <div className="bg-secondary-100 text-secondary-800 px-4 py-2 rounded-full text-sm font-medium">
-            {users.length} Total Users
+          <div className="flex space-x-4">
+            <div className="bg-secondary-100 text-secondary-800 px-4 py-2 rounded-full text-sm font-medium">
+              {totalParents} Parents
+            </div>
+            <div className="bg-primary-100 text-primary-800 px-4 py-2 rounded-full text-sm font-medium">
+              {totalAdmins} Admins
+            </div>
+            <div className="bg-accent-100 text-accent-800 px-4 py-2 rounded-full text-sm font-medium">
+              {totalBookings} Bookings
+            </div>
           </div>
         </div>
 
@@ -122,6 +185,9 @@ const AdminDashboardPage = () => {
                     <h2 className="text-xl font-semibold text-gray-900">{user.name || 'No name provided'}</h2>
                     <p className="text-gray-600">{user.email}</p>
                     {user.phone && <p className="text-gray-600">{user.phone}</p>}
+                    <p className="text-gray-500 text-sm">
+                      Joined {new Date(user.created_at).toLocaleDateString()}
+                    </p>
                   </div>
                   <span className={`px-3 py-1 rounded-full text-sm font-medium ${
                     user.role === 'admin' 
@@ -136,7 +202,7 @@ const AdminDashboardPage = () => {
                   <div>
                     <h3 className="text-lg font-semibold text-gray-800 mb-3 flex items-center">
                       <Calendar className="h-5 w-5 mr-2 text-secondary-500" />
-                      Booked Classes
+                      Booked Classes ({user.bookings.length})
                     </h3>
                     <div className="space-y-3">
                       {user.bookings.map((booking) => (
