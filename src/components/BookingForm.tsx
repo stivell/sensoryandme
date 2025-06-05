@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAppContext } from '../context/AppContext';
+import { supabase } from '../lib/supabase';
 
 interface BookingFormProps {
   classId: string;
@@ -30,16 +31,18 @@ const BookingForm: React.FC<BookingFormProps> = ({
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [currentStep, setCurrentStep] = useState(1);
+  const [error, setError] = useState<string | null>(null);
   
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
+    setError(null);
   };
   
   const handleNextStep = () => {
     if (currentStep === 1) {
       if (!formData.parentName || !formData.email || !formData.phone) {
-        alert('Please fill out all required fields');
+        setError('Please fill out all required fields');
         return;
       }
     }
@@ -48,31 +51,52 @@ const BookingForm: React.FC<BookingFormProps> = ({
   
   const handlePrevStep = () => {
     setCurrentStep(1);
+    setError(null);
   };
   
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
     if (!formData.childName || !formData.childAge) {
-      alert('Please fill out all required fields');
+      setError('Please fill out all required fields');
       return;
     }
     
     setIsSubmitting(true);
+    setError(null);
     
-    // Simulate API call for booking and payment processing
-    setTimeout(() => {
-      console.log('Booking submitted:', {
-        classId,
-        className,
-        classDate,
-        classTime,
-        price,
-        ...formData
+    try {
+      // Get user session
+      const { data: { session }, error: authError } = await supabase.auth.getSession();
+      
+      if (authError || !session) {
+        throw new Error('Please sign in to book a class');
+      }
+      
+      // Create booking
+      const { error: bookingError } = await supabase
+        .from('bookings')
+        .insert({
+          class_id: classId,
+          user_id: session.user.id,
+          child_name: formData.childName,
+          child_age: parseInt(formData.childAge),
+          special_needs: formData.specialNeeds || null,
+          payment_status: 'pending'
+        });
+      
+      if (bookingError) {
+        throw bookingError;
+      }
+      
+      // Update class enrollment
+      const { error: updateError } = await supabase.rpc('increment_enrollment', {
+        p_class_id: classId
       });
       
-      // Send admin notification (simulated)
-      console.log('Admin notification: New booking for class', classId);
+      if (updateError) {
+        throw updateError;
+      }
       
       // Store email for context
       setUserEmail(formData.email);
@@ -87,9 +111,12 @@ const BookingForm: React.FC<BookingFormProps> = ({
           email: formData.email
         } 
       });
-      
+    } catch (err) {
+      console.error('Booking error:', err);
+      setError(err instanceof Error ? err.message : 'Failed to create booking');
+    } finally {
       setIsSubmitting(false);
-    }, 1500);
+    }
   };
   
   // Format date
@@ -153,6 +180,12 @@ const BookingForm: React.FC<BookingFormProps> = ({
             <div className="text-xl font-bold text-secondary-700">${price}</div>
           </div>
         </div>
+        
+        {error && (
+          <div className="mb-6 bg-error-50 border border-error-200 text-error-800 p-3 rounded-lg">
+            {error}
+          </div>
+        )}
         
         <form onSubmit={handleSubmit}>
           {currentStep === 1 && (
