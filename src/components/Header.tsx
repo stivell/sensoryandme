@@ -8,6 +8,7 @@ const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [user, setUser] = useState(null);
+  const [isAdmin, setIsAdmin] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -30,6 +31,9 @@ const Header = () => {
     // Get initial session
     supabase.auth.getSession().then(({ data: { session } }) => {
       setUser(session?.user ?? null);
+      if (session?.user) {
+        checkAdminStatus(session.user.id);
+      }
     });
 
     // Listen for auth changes
@@ -37,10 +41,25 @@ const Header = () => {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((_event, session) => {
       setUser(session?.user ?? null);
+      if (session?.user) {
+        checkAdminStatus(session.user.id);
+      } else {
+        setIsAdmin(false);
+      }
     });
 
     return () => subscription.unsubscribe();
   }, []);
+
+  const checkAdminStatus = async (userId: string) => {
+    const { data } = await supabase
+      .from('users')
+      .select('role')
+      .eq('id', userId)
+      .single();
+    
+    setIsAdmin(data?.role === 'admin');
+  };
 
   const handleSignOut = async () => {
     await supabase.auth.signOut();
@@ -109,6 +128,14 @@ const Header = () => {
           ))}
           {user ? (
             <div className="flex items-center space-x-4">
+              {isAdmin && (
+                <Link 
+                  to="/admin"
+                  className="font-medium text-gray-800 hover:text-secondary-600"
+                >
+                  Admin Dashboard
+                </Link>
+              )}
               <button
                 onClick={handleSignOut}
                 className="font-medium text-gray-800 hover:text-secondary-600"
@@ -171,6 +198,14 @@ const Header = () => {
               ))}
               {user ? (
                 <>
+                  {isAdmin && (
+                    <Link 
+                      to="/admin"
+                      className="font-medium py-2 text-gray-800 hover:text-secondary-600"
+                    >
+                      Admin Dashboard
+                    </Link>
+                  )}
                   <button
                     onClick={handleSignOut}
                     className="font-medium py-2 text-gray-800 hover:text-secondary-600 text-left"

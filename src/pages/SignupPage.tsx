@@ -5,6 +5,7 @@ import { supabase } from '../lib/supabase';
 const SignupPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [name, setName] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -15,15 +16,29 @@ const SignupPage = () => {
     setLoading(true);
 
     try {
-      const { error } = await supabase.auth.signUp({
+      // Sign up the user
+      const { data: authData, error: signUpError } = await supabase.auth.signUp({
         email,
         password,
         options: {
           emailRedirectTo: `${window.location.origin}`,
+          data: {
+            name: name // Add name to user metadata
+          }
         },
       });
 
-      if (error) throw error;
+      if (signUpError) throw signUpError;
+
+      // Update the user's name in the users table
+      if (authData.user) {
+        const { error: updateError } = await supabase
+          .from('users')
+          .update({ name })
+          .eq('id', authData.user.id);
+
+        if (updateError) throw updateError;
+      }
 
       // Redirect to home page after successful signup
       navigate('/', { 
@@ -64,6 +79,21 @@ const SignupPage = () => {
           )}
           <div className="rounded-md shadow-sm -space-y-px">
             <div>
+              <label htmlFor="name" className="sr-only">
+                Full Name
+              </label>
+              <input
+                id="name"
+                name="name"
+                type="text"
+                required
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                className="appearance-none rounded-t-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-primary-500 focus:border-primary-500 focus:z-10 sm:text-sm"
+                placeholder="Full Name"
+              />
+            </div>
+            <div>
               <label htmlFor="email-address" className="sr-only">
                 Email address
               </label>
@@ -75,7 +105,7 @@ const SignupPage = () => {
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-primary-500 focus:border-primary-500 focus:z-10 sm:text-sm"
+                className="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-primary-500 focus:border-primary-500 focus:z-10 sm:text-sm"
                 placeholder="Email address"
               />
             </div>
@@ -91,7 +121,7 @@ const SignupPage = () => {
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-primary-500 focus:border-primary-500 focus:z-10 sm:text-sm"
+                className="appearance-none rounded-b-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-primary-500 focus:border-primary-500 focus:z-10 sm:text-sm"
                 placeholder="Password"
               />
             </div>
