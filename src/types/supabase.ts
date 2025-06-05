@@ -43,6 +43,7 @@ export interface Database {
           id: string
           class_id: string
           user_id: string
+          parent_name: string
           child_name: string
           child_age: number
           special_needs: string | null
@@ -53,6 +54,7 @@ export interface Database {
           id?: string
           class_id: string
           user_id: string
+          parent_name: string
           child_name: string
           child_age: number
           special_needs?: string | null
@@ -63,6 +65,7 @@ export interface Database {
           id?: string
           class_id?: string
           user_id?: string
+          parent_name?: string
           child_name?: string
           child_age?: number
           special_needs?: string | null

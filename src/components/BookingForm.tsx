@@ -79,6 +79,7 @@ const BookingForm: React.FC<BookingFormProps> = ({
         .insert({
           class_id: classId,
           user_id: session.user.id,
+          parent_name: formData.parentName,
           child_name: formData.childName,
           child_age: parseInt(formData.childAge),
           special_needs: formData.specialNeeds || null,
