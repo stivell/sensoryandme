@@ -1,32 +1,32 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
-import { Users, Calendar, AlertCircle, ShieldAlert } from 'lucide-react';
+import { Users, Calendar, AlertCircle, ShieldAlert, Clock, DollarSign } from 'lucide-react';
 
-interface UserWithBookings {
+interface Booking {
   id: string;
-  email: string;
-  name: string;
-  role: string;
-  phone: string | null;
+  parent_name: string;
+  child_name: string;
+  child_age: number;
+  special_needs: string | null;
+  payment_status: string;
   created_at: string;
-  bookings: {
+  class: {
     id: string;
-    child_name: string;
-    child_age: number;
-    payment_status: string;
-    created_at: string;
-    class: {
-      title: string;
-      date: string;
-      time: string;
-    };
-  }[];
+    title: string;
+    date: string;
+    time: string;
+    price: number;
+  } | null;
+  user: {
+    email: string;
+    phone: string | null;
+  } | null;
 }
 
 const AdminDashboardPage = () => {
   const navigate = useNavigate();
-  const [users, setUsers] = useState<UserWithBookings[]>([]);
+  const [bookings, setBookings] = useState<Booking[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [isAdmin, setIsAdmin] = useState(false);
@@ -57,7 +57,7 @@ const AdminDashboardPage = () => {
       }
     };
 
-    const fetchData = async () => {
+    const fetchBookings = async () => {
       try {
         const isAdminUser = await checkAdminAccess();
         setIsAdmin(isAdminUser);
@@ -68,50 +68,36 @@ const AdminDashboardPage = () => {
           return;
         }
 
-        // Fetch all users from public.users with their details
-        const { data: usersData, error: usersError } = await supabase
-          .from('users')
-          .select('*')
-          .order('created_at', { ascending: false });
-
-        if (usersError) throw usersError;
-
-        // Fetch all bookings with class details
-        const { data: bookingsData, error: bookingsError } = await supabase
+        const { data, error: bookingsError } = await supabase
           .from('bookings')
           .select(`
-            id,
-            child_name,
-            child_age,
-            payment_status,
-            created_at,
-            user_id,
+            *,
             class:classes (
+              id,
               title,
               date,
-              time
+              time,
+              price
+            ),
+            user:users (
+              email,
+              phone
             )
           `)
           .order('created_at', { ascending: false });
 
         if (bookingsError) throw bookingsError;
 
-        // Combine users with their bookings
-        const usersWithBookings = usersData.map(user => ({
-          ...user,
-          bookings: bookingsData.filter(booking => booking.user_id === user.id) || []
-        }));
-
-        setUsers(usersWithBookings);
+        setBookings(data || []);
       } catch (err) {
-        console.error('Error fetching data:', err);
-        setError(err instanceof Error ? err.message : 'Failed to fetch data');
+        console.error('Error fetching bookings:', err);
+        setError(err instanceof Error ? err.message : 'Failed to fetch bookings');
       } finally {
         setIsLoading(false);
       }
     };
 
-    fetchData();
+    fetchBookings();
   }, [navigate]);
 
   if (isLoading) {
@@ -144,27 +130,33 @@ const AdminDashboardPage = () => {
     );
   }
 
-  const totalBookings = users.reduce((sum, user) => sum + user.bookings.length, 0);
-  const totalParents = users.filter(user => user.role === 'parent').length;
-  const totalAdmins = users.filter(user => user.role === 'admin').length;
+  const totalBookings = bookings.length;
+  const pendingBookings = bookings.filter(b => b.payment_status === 'pending').length;
+  const completedBookings = bookings.filter(b => b.payment_status === 'completed').length;
+  const totalRevenue = bookings
+    .filter(b => b.payment_status === 'completed' && b.class)
+    .reduce((sum, b) => sum + Number(b.class?.price || 0), 0);
 
   return (
     <div className="min-h-screen pt-24 pb-12">
       <div className="container-custom">
         <div className="flex items-center justify-between mb-8">
           <h1 className="text-3xl font-bold text-gray-900 flex items-center">
-            <Users className="h-8 w-8 mr-3 text-secondary-600" />
-            Admin Dashboard
+            <Calendar className="h-8 w-8 mr-3 text-secondary-600" />
+            Bookings Dashboard
           </h1>
           <div className="flex space-x-4">
             <div className="bg-secondary-100 text-secondary-800 px-4 py-2 rounded-full text-sm font-medium">
-              {totalParents} Parents
+              {totalBookings} Total Bookings
+            </div>
+            <div className="bg-warning-100 text-warning-800 px-4 py-2 rounded-full text-sm font-medium">
+              {pendingBookings} Pending
+            </div>
+            <div className="bg-success-100 text-success-800 px-4 py-2 rounded-full text-sm font-medium">
+              {completedBookings} Completed
             </div>
             <div className="bg-primary-100 text-primary-800 px-4 py-2 rounded-full text-sm font-medium">
-              {totalAdmins} Admins
-            </div>
-            <div className="bg-accent-100 text-accent-800 px-4 py-2 rounded-full text-sm font-medium">
-              {totalBookings} Bookings
+              ${totalRevenue} Revenue
             </div>
           </div>
         </div>
@@ -176,73 +168,94 @@ const AdminDashboardPage = () => {
           </div>
         )}
 
-        <div className="grid gap-6">
-          {users.map((user) => (
-            <div key={user.id} className="bg-white rounded-xl shadow-md overflow-hidden">
-              <div className="p-6">
-                <div className="flex items-start justify-between mb-4">
-                  <div>
-                    <h2 className="text-xl font-semibold text-gray-900">{user.name || 'No name provided'}</h2>
-                    <p className="text-gray-600">{user.email}</p>
-                    {user.phone && <p className="text-gray-600">{user.phone}</p>}
-                    <p className="text-gray-500 text-sm">
-                      Joined {new Date(user.created_at).toLocaleDateString()}
-                    </p>
-                  </div>
-                  <span className={`px-3 py-1 rounded-full text-sm font-medium ${
-                    user.role === 'admin' 
-                      ? 'bg-primary-100 text-primary-800'
-                      : 'bg-secondary-100 text-secondary-800'
-                  }`}>
-                    {user.role}
-                  </span>
-                </div>
-
-                {user.bookings && user.bookings.length > 0 ? (
-                  <div>
-                    <h3 className="text-lg font-semibold text-gray-800 mb-3 flex items-center">
-                      <Calendar className="h-5 w-5 mr-2 text-secondary-500" />
-                      Booked Classes ({user.bookings.length})
-                    </h3>
-                    <div className="space-y-3">
-                      {user.bookings.map((booking) => (
-                        <div 
-                          key={booking.id}
-                          className="bg-gray-50 rounded-lg p-4"
-                        >
-                          <div className="flex justify-between items-start">
-                            <div>
-                              <h4 className="font-medium text-gray-900">{booking.class.title}</h4>
-                              <p className="text-gray-600">
-                                {new Date(booking.class.date).toLocaleDateString('en-US', {
-                                  weekday: 'long',
-                                  year: 'numeric',
-                                  month: 'long',
-                                  day: 'numeric'
-                                })} at {booking.class.time}
-                              </p>
-                              <p className="text-gray-600">
-                                Child: {booking.child_name} (Age {booking.child_age})
-                              </p>
-                            </div>
-                            <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                              booking.payment_status === 'completed'
-                                ? 'bg-success-100 text-success-800'
-                                : 'bg-warning-100 text-warning-800'
-                            }`}>
-                              {booking.payment_status}
-                            </span>
-                          </div>
+        <div className="bg-white rounded-xl shadow-md overflow-hidden">
+          <div className="overflow-x-auto">
+            <table className="min-w-full divide-y divide-gray-200">
+              <thead className="bg-gray-50">
+                <tr>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Parent Details
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Child Details
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Class Details
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Status
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Booking Date
+                  </th>
+                </tr>
+              </thead>
+              <tbody className="bg-white divide-y divide-gray-200">
+                {bookings.map((booking) => (
+                  <tr key={booking.id} className="hover:bg-gray-50">
+                    <td className="px-6 py-4">
+                      <div className="text-sm font-medium text-gray-900">{booking.parent_name}</div>
+                      {booking.user && (
+                        <>
+                          <div className="text-sm text-gray-500">{booking.user.email}</div>
+                          {booking.user.phone && (
+                            <div className="text-sm text-gray-500">{booking.user.phone}</div>
+                          )}
+                        </>
+                      )}
+                    </td>
+                    <td className="px-6 py-4">
+                      <div className="text-sm text-gray-900">
+                        {booking.child_name} (Age {booking.child_age})
+                      </div>
+                      {booking.special_needs && (
+                        <div className="text-sm text-gray-500 mt-1">
+                          <span className="font-medium">Special needs:</span> {booking.special_needs}
                         </div>
-                      ))}
-                    </div>
-                  </div>
-                ) : (
-                  <p className="text-gray-500 italic">No classes booked yet</p>
-                )}
-              </div>
-            </div>
-          ))}
+                      )}
+                    </td>
+                    <td className="px-6 py-4">
+                      {booking.class ? (
+                        <>
+                          <div className="text-sm font-medium text-gray-900">{booking.class.title}</div>
+                          <div className="text-sm text-gray-500">
+                            {new Date(booking.class.date).toLocaleDateString('en-US', {
+                              weekday: 'long',
+                              year: 'numeric',
+                              month: 'long',
+                              day: 'numeric'
+                            })}
+                          </div>
+                          <div className="text-sm text-gray-500">{booking.class.time}</div>
+                          <div className="text-sm font-medium text-primary-600">${booking.class.price}</div>
+                        </>
+                      ) : (
+                        <div className="text-sm text-gray-500">Class details not available</div>
+                      )}
+                    </td>
+                    <td className="px-6 py-4">
+                      <span className={`px-2 py-1 text-xs font-medium rounded-full ${
+                        booking.payment_status === 'completed'
+                          ? 'bg-success-100 text-success-800'
+                          : 'bg-warning-100 text-warning-800'
+                      }`}>
+                        {booking.payment_status}
+                      </span>
+                    </td>
+                    <td className="px-6 py-4 text-sm text-gray-500">
+                      {new Date(booking.created_at).toLocaleDateString('en-US', {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit'
+                      })}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>
