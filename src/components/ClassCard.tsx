@@ -33,7 +33,7 @@ const ClassCard: React.FC<ClassCardProps> = ({ classItem, index = 0 }) => {
     >
       <div className="relative overflow-hidden">
         <img 
-          src={classItem.imageUrl} 
+          src={classItem.image_url} 
           alt={classItem.title} 
           className="w-full h-56 object-cover transition-transform duration-500 group-hover:scale-105"
         />
@@ -42,7 +42,7 @@ const ClassCard: React.FC<ClassCardProps> = ({ classItem, index = 0 }) => {
         </div>
         <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-gray-900/80 to-transparent p-4">
           <span className="inline-block bg-primary-500 text-white text-xs font-medium px-2.5 py-1 rounded">
-            Ages {classItem.ageGroup}
+            Ages {classItem.age_group}
           </span>
         </div>
       </div>
@@ -63,7 +63,7 @@ const ClassCard: React.FC<ClassCardProps> = ({ classItem, index = 0 }) => {
           
           <div className="flex items-center">
             <MapPin className="w-4 h-4 mr-2 text-secondary-500" />
-            <span>Location {classItem.locationId.replace('loc', '')}</span>
+            <span>Location {classItem.location_id.slice(0, 8)}</span>
           </div>
           
           <div className="flex items-center">

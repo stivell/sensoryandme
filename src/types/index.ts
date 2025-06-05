@@ -8,10 +8,11 @@ export interface Class {
   capacity: number;
   enrolled: number;
   price: number;
-  locationId: string;
-  ageGroup: string;
+  location_id: string;
+  age_group: string;
   skills: string[];
-  imageUrl: string;
+  image_url: string;
+  created_at?: string;
 }
 
 export interface Location {
@@ -21,22 +22,23 @@ export interface Location {
   city: string;
   state: string;
   zip: string;
-  imageUrl: string;
+  image_url: string;
+  created_at?: string;
 }
 
 export interface Booking {
   id: string;
-  classId: string;
-  userId: string;
-  childName: string;
-  childAge: number;
-  paymentStatus: 'pending' | 'completed';
-  bookingDate: string;
-  specialNeeds?: string;
+  class_id: string;
+  user_id: string;
+  child_name: string;
+  child_age: number;
+  payment_status: 'pending' | 'completed';
+  created_at: string;
+  special_needs?: string;
 }
 
 export interface Newsletter {
   email: string;
   name?: string;
-  subscribeDate: string;
+  created_at: string;
 }

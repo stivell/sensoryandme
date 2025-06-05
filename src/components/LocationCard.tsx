@@ -20,7 +20,7 @@ const LocationCard: React.FC<LocationCardProps> = ({ location, index = 0 }) => {
     >
       <div className="relative overflow-hidden h-48">
         <img 
-          src={location.imageUrl} 
+          src={location.image_url} 
           alt={location.name} 
           className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
         />

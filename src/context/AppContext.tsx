@@ -1,6 +1,6 @@
-import React, { createContext, useState, useContext, ReactNode } from 'react';
+import React, { createContext, useState, useContext, ReactNode, useEffect } from 'react';
 import { Class, Location } from '../types';
-import { mockClasses, mockLocations } from '../data/mockData';
+import { supabase } from '../lib/supabase';
 
 interface AppContextProps {
   classes: Class[];
@@ -20,23 +20,57 @@ interface AppContextProps {
 const AppContext = createContext<AppContextProps | undefined>(undefined);
 
 export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [classes] = useState<Class[]>(mockClasses);
-  const [locations] = useState<Location[]>(mockLocations);
+  const [classes, setClasses] = useState<Class[]>([]);
+  const [locations, setLocations] = useState<Location[]>([]);
   const [userEmail, setUserEmail] = useState<string | null>(null);
   const [isNewsletterSubscribed, setIsNewsletterSubscribed] = useState<boolean>(false);
   const [newsletterEmail, setNewsletterEmail] = useState<string>('');
-  const [filteredClasses, setFilteredClasses] = useState<Class[]>(mockClasses);
+  const [filteredClasses, setFilteredClasses] = useState<Class[]>([]);
   const [selectedClass, setSelectedClass] = useState<Class | null>(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        // Fetch locations
+        const { data: locationsData, error: locationsError } = await supabase
+          .from('locations')
+          .select('*');
+
+        if (locationsError) {
+          console.error('Error fetching locations:', locationsError);
+          return;
+        }
+
+        // Fetch classes
+        const { data: classesData, error: classesError } = await supabase
+          .from('classes')
+          .select('*');
+
+        if (classesError) {
+          console.error('Error fetching classes:', classesError);
+          return;
+        }
+
+        setLocations(locationsData);
+        setClasses(classesData);
+        setFilteredClasses(classesData);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   const filterClasses = (locationId?: string, ageGroup?: string, dateRange?: [Date, Date]) => {
     let result = [...classes];
     
     if (locationId) {
-      result = result.filter(c => c.locationId === locationId);
+      result = result.filter(c => c.location_id === locationId);
     }
     
     if (ageGroup) {
-      result = result.filter(c => c.ageGroup === ageGroup);
+      result = result.filter(c => c.age_group === ageGroup);
     }
     
     if (dateRange && dateRange.length === 2) {
