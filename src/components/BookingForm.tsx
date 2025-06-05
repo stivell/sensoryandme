@@ -72,6 +72,17 @@ const BookingForm: React.FC<BookingFormProps> = ({
       if (authError || !session) {
         throw new Error('Please sign in to book a class');
       }
+
+      // Get location details
+      const { data: classData } = await supabase
+        .from('classes')
+        .select('*, location:locations(name)')
+        .eq('id', classId)
+        .single();
+
+      if (!classData) {
+        throw new Error('Class not found');
+      }
       
       // Create booking
       const { error: bookingError } = await supabase
@@ -97,6 +108,33 @@ const BookingForm: React.FC<BookingFormProps> = ({
       
       if (updateError) {
         throw updateError;
+      }
+
+      // Send confirmation emails
+      const { error: emailError } = await fetch(
+        `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/send-booking-email`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${session.access_token}`,
+          },
+          body: JSON.stringify({
+            to: formData.email,
+            templateData: {
+              parentName: formData.parentName,
+              childName: formData.childName,
+              className,
+              classDate,
+              classTime,
+              location: classData.location.name,
+            },
+          }),
+        }
+      ).then(res => res.json());
+
+      if (emailError) {
+        console.error('Error sending confirmation email:', emailError);
       }
       
       // Store email for context
