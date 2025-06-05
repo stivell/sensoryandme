@@ -12,6 +12,7 @@ interface AppContextProps {
   newsletterEmail: string;
   setNewsletterEmail: (email: string) => void;
   filteredClasses: Class[];
+  setFilteredClasses: (classes: Class[]) => void;
   filterClasses: (locationId?: string, ageGroup?: string, dateRange?: [Date, Date]) => void;
   selectedClass: Class | null;
   setSelectedClass: (classItem: Class | null) => void;
@@ -94,6 +95,7 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
       newsletterEmail,
       setNewsletterEmail,
       filteredClasses,
+      setFilteredClasses,
       filterClasses,
       selectedClass,
       setSelectedClass,

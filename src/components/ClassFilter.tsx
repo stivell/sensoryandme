@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { useAppContext } from '../context/AppContext';
-import { Calendar, Clock, MapPin } from 'lucide-react';
+import { Calendar } from 'lucide-react';
 
 const ClassFilter: React.FC = () => {
-  const { locations, filterClasses } = useAppContext();
+  const { locations, filterClasses, classes, setFilteredClasses } = useAppContext();
   const [location, setLocation] = useState<string>('');
   const [ageGroup, setAgeGroup] = useState<string>('');
   
@@ -14,7 +14,7 @@ const ClassFilter: React.FC = () => {
   const handleReset = () => {
     setLocation('');
     setAgeGroup('');
-    filterClasses();
+    setFilteredClasses(classes); // Reset to all classes directly
   };
   
   return (
