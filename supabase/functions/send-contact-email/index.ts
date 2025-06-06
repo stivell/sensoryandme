@@ -83,7 +83,7 @@ Deno.serve(async (req: Request) => {
       },
       body: JSON.stringify({
         personalizations: [{
-          to: [{ email: 'stivell@gmail.com', name: 'Learn by Sensory Admin' }],
+          to: [{ email: 'Jysseka@learnbysensory.com', name: 'Jysseka Campbell-George' }],
           subject: `New Contact Form Submission: ${subject}`,
           custom_args: {
             'contact_form': 'true',

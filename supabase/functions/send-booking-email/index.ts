@@ -64,7 +64,7 @@ serve(async (req) => {
 
     // Send notification to admin
     await sgMail.send({
-      to: 'admin@learnbysensory.com', // Updated domain
+      to: 'Jysseka@learnbysensory.com', // Updated admin email
       from: 'bookings@learnbysensory.com', // Updated domain
       templateId: 'd-987654321', // Replace with your admin notification template ID
       dynamicTemplateData: {

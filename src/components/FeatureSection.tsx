@@ -4,25 +4,25 @@ import { Heart, Users, Lightbulb, Shield } from 'lucide-react';
 
 const features = [
   {
-    icon: <Heart className="h-8 w-8 text-secondary-500" />,
+    icon: <Heart className="h-8 w-8 text-purple-500" />,
     title: 'Inclusive & Supportive',
     description: 'Welcoming environment where every child feels valued, supported, and encouraged to participate at their own pace.',
     delay: 0.1
   },
   {
-    icon: <Lightbulb className="h-8 w-8 text-primary-500" />,
+    icon: <Lightbulb className="h-8 w-8 text-green-500" />,
     title: 'Skill-Focused Activities',
     description: 'Each activity is purposefully designed to build specific developmental skills while keeping the fun factor high.',
     delay: 0.2
   },
   {
-    icon: <Users className="h-8 w-8 text-accent-500" />,
+    icon: <Users className="h-8 w-8 text-purple-600" />,
     title: 'Small Group Sizes',
     description: 'Limited group sizes ensure personalized attention and create the optimal environment for social learning.',
     delay: 0.3
   },
   {
-    icon: <Shield className="h-8 w-8 text-success-500" />,
+    icon: <Shield className="h-8 w-8 text-green-600" />,
     title: 'Trained Facilitators',
     description: 'Expert facilitators with specialized training in child development and special needs support.',
     delay: 0.4

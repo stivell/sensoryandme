@@ -28,7 +28,7 @@ const testimonials = [
 
 const TestimonialSection: React.FC = () => {
   return (
-    <section className="py-16 bg-secondary-50">
+    <section className="py-16 bg-purple-50">
       <div className="container-custom">
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">What Parents Say</h2>
@@ -48,7 +48,7 @@ const TestimonialSection: React.FC = () => {
               className="bg-white rounded-xl p-6 shadow-md relative"
             >
               {/* Quote mark decoration */}
-              <div className="absolute -top-4 -left-4 text-5xl text-secondary-200 opacity-50">"</div>
+              <div className="absolute -top-4 -left-4 text-5xl text-purple-200 opacity-50">"</div>
               
               {/* Star rating */}
               <div className="flex mb-4">

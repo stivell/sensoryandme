@@ -50,7 +50,7 @@ const HomePage: React.FC = () => {
       
       <FeatureSection />
       
-      <section className="py-16 bg-gradient-to-br from-primary-50 to-secondary-50">
+      <section className="py-16 bg-gradient-to-br from-green-50 to-purple-50">
         <div className="container-custom">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div>
@@ -60,7 +60,7 @@ const HomePage: React.FC = () => {
                 viewport={{ once: true }}
                 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6"
               >
-                Our AI-Powered <span className="text-secondary-600">Approach</span>
+                Our AI-Powered <span className="text-purple-600">Approach</span>
               </motion.h2>
               
               <motion.div 
@@ -112,8 +112,8 @@ const HomePage: React.FC = () => {
                 className="absolute -bottom-6 -right-6 bg-white p-4 rounded-lg shadow-lg max-w-xs"
               >
                 <div className="flex items-center">
-                  <div className="bg-primary-100 rounded-full p-2 mr-3">
-                    <Clock className="w-5 h-5 text-primary-600" />
+                  <div className="bg-green-100 rounded-full p-2 mr-3">
+                    <Clock className="w-5 h-5 text-green-600" />
                   </div>
                   <p className="font-medium text-gray-800">Classes optimized for maximum skill development</p>
                 </div>
@@ -125,7 +125,7 @@ const HomePage: React.FC = () => {
       
       <TestimonialSection />
       
-      <section className="py-16 bg-secondary-600">
+      <section className="py-16 bg-purple-600">
         <div className="container-custom">
           <div className="text-center max-w-3xl mx-auto">
             <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
@@ -136,7 +136,7 @@ const HomePage: React.FC = () => {
               Book your first session today or sign up for our newsletter to stay informed.
             </p>
             <div className="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4">
-              <Link to="/classes" className="btn bg-white text-secondary-700 hover:bg-gray-100 focus:ring-white">
+              <Link to="/classes" className="btn bg-white text-purple-700 hover:bg-gray-100 focus:ring-white">
                 Book a Session
               </Link>
               <a href="#newsletter" className="btn border-2 border-white text-white hover:bg-white/10 focus:ring-white">

@@ -14,7 +14,7 @@ const ClassesPage: React.FC = () => {
   
   return (
     <>
-      <section className="pt-28 pb-10 bg-gradient-to-b from-secondary-50 to-white">
+      <section className="pt-28 pb-10 bg-gradient-to-b from-purple-50 to-white">
         <div className="container-custom">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -22,7 +22,7 @@ const ClassesPage: React.FC = () => {
             className="text-center max-w-3xl mx-auto"
           >
             <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-              Find the Perfect <span className="text-secondary-600">Play Group</span>
+              Find the Perfect <span className="text-purple-600">Play Group</span>
             </h1>
             <p className="text-xl text-gray-600 mb-8">
               Browse our upcoming sessions and find the perfect match for your child's needs and interests.

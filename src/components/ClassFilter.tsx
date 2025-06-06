@@ -20,7 +20,7 @@ const ClassFilter: React.FC = () => {
   return (
     <div className="bg-white rounded-xl shadow-md p-6">
       <h3 className="font-semibold text-lg mb-4 flex items-center">
-        <Calendar className="mr-2 h-5 w-5 text-secondary-500" />
+        <Calendar className="mr-2 h-5 w-5 text-purple-500" />
         Filter Classes
       </h3>
       

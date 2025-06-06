@@ -102,12 +102,12 @@ const Header = () => {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             className={`font-bold text-xl md:text-2xl transition-colors duration-300 ${
-              isScrolled ? 'text-secondary-700' : 'text-secondary-800'
+              isScrolled ? 'text-purple-700' : 'text-purple-800'
             }`}
           >
-            <span className="text-primary-600">Learn</span>
-            <span className="text-secondary-600">&nbsp;by&nbsp;</span>
-            <span className="text-accent-600">Sensory</span>
+            <span className="text-green-600">Learn</span>
+            <span className="text-purple-600">&nbsp;by&nbsp;</span>
+            <span className="text-green-600">Sensory</span>
           </motion.div>
         </Link>
 
@@ -117,9 +117,9 @@ const Header = () => {
             <Link
               key={item.name}
               to={item.path}
-              className={`font-medium transition-colors duration-300 hover:text-secondary-600 ${
+              className={`font-medium transition-colors duration-300 hover:text-purple-600 ${
                 location.pathname === item.path 
-                  ? 'text-secondary-600 font-semibold' 
+                  ? 'text-purple-600 font-semibold' 
                   : isScrolled ? 'text-gray-800' : 'text-gray-900'
               }`}
             >
@@ -130,21 +130,21 @@ const Header = () => {
             <div className="flex items-center space-x-4">
               <Link 
                 to="/my-bookings"
-                className="font-medium text-gray-800 hover:text-secondary-600"
+                className="font-medium text-gray-800 hover:text-purple-600"
               >
                 My Bookings
               </Link>
               {isAdmin && (
                 <Link 
                   to="/admin"
-                  className="font-medium text-gray-800 hover:text-secondary-600"
+                  className="font-medium text-gray-800 hover:text-purple-600"
                 >
                   Admin Dashboard
                 </Link>
               )}
               <button
                 onClick={handleSignOut}
-                className="font-medium text-gray-800 hover:text-secondary-600"
+                className="font-medium text-gray-800 hover:text-purple-600"
               >
                 Sign Out
               </button>
@@ -154,7 +154,7 @@ const Header = () => {
             </div>
           ) : (
             <div className="flex items-center space-x-4">
-              <Link to="/login" className="font-medium text-gray-800 hover:text-secondary-600">
+              <Link to="/login" className="font-medium text-gray-800 hover:text-purple-600">
                 Sign In
               </Link>
               <Link to="/signup" className="btn-primary">
@@ -195,8 +195,8 @@ const Header = () => {
                   to={item.path}
                   className={`font-medium py-2 transition-colors ${
                     location.pathname === item.path 
-                      ? 'text-secondary-600 font-semibold' 
-                      : 'text-gray-800 hover:text-secondary-600'
+                      ? 'text-purple-600 font-semibold' 
+                      : 'text-gray-800 hover:text-purple-600'
                   }`}
                 >
                   {item.name}
@@ -206,21 +206,21 @@ const Header = () => {
                 <>
                   <Link 
                     to="/my-bookings"
-                    className="font-medium py-2 text-gray-800 hover:text-secondary-600"
+                    className="font-medium py-2 text-gray-800 hover:text-purple-600"
                   >
                     My Bookings
                   </Link>
                   {isAdmin && (
                     <Link 
                       to="/admin"
-                      className="font-medium py-2 text-gray-800 hover:text-secondary-600"
+                      className="font-medium py-2 text-gray-800 hover:text-purple-600"
                     >
                       Admin Dashboard
                     </Link>
                   )}
                   <button
                     onClick={handleSignOut}
-                    className="font-medium py-2 text-gray-800 hover:text-secondary-600 text-left"
+                    className="font-medium py-2 text-gray-800 hover:text-purple-600 text-left"
                   >
                     Sign Out
                   </button>
@@ -230,7 +230,7 @@ const Header = () => {
                 </>
               ) : (
                 <>
-                  <Link to="/login" className="font-medium py-2 text-gray-800 hover:text-secondary-600">
+                  <Link to="/login" className="font-medium py-2 text-gray-800 hover:text-purple-600">
                     Sign In
                   </Link>
                   <Link to="/signup" className="btn-primary w-full text-center">

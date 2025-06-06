@@ -37,11 +37,11 @@ const ClassCard: React.FC<ClassCardProps> = ({ classItem, index = 0 }) => {
           alt={classItem.title} 
           className="w-full h-56 object-cover transition-transform duration-500 group-hover:scale-105"
         />
-        <div className="absolute top-3 right-3 bg-white/90 text-secondary-700 font-bold px-3 py-1 rounded-full text-sm">
+        <div className="absolute top-3 right-3 bg-white/90 text-purple-700 font-bold px-3 py-1 rounded-full text-sm">
           ${classItem.price}
         </div>
         <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-gray-900/80 to-transparent p-4">
-          <span className="inline-block bg-primary-500 text-white text-xs font-medium px-2.5 py-1 rounded">
+          <span className="inline-block bg-green-500 text-white text-xs font-medium px-2.5 py-1 rounded">
             Ages {classItem.age_group}
           </span>
         </div>
@@ -52,22 +52,22 @@ const ClassCard: React.FC<ClassCardProps> = ({ classItem, index = 0 }) => {
         
         <div className="space-y-2 mb-4 text-sm text-gray-600">
           <div className="flex items-center">
-            <Calendar className="w-4 h-4 mr-2 text-secondary-500" />
+            <Calendar className="w-4 h-4 mr-2 text-purple-500" />
             <span>{formatDate(classItem.date)}</span>
           </div>
           
           <div className="flex items-center">
-            <Clock className="w-4 h-4 mr-2 text-secondary-500" />
+            <Clock className="w-4 h-4 mr-2 text-purple-500" />
             <span>{classItem.time} ({classItem.duration} min)</span>
           </div>
           
           <div className="flex items-center">
-            <MapPin className="w-4 h-4 mr-2 text-secondary-500" />
+            <MapPin className="w-4 h-4 mr-2 text-purple-500" />
             <span>Location {classItem.location_id.slice(0, 8)}</span>
           </div>
           
           <div className="flex items-center">
-            <Users className="w-4 h-4 mr-2 text-secondary-500" />
+            <Users className="w-4 h-4 mr-2 text-purple-500" />
             <span className={spotsLeft <= 2 ? 'text-error-600 font-medium' : ''}>
               {spotsLeft} spots left
             </span>

@@ -31,7 +31,7 @@ const Calendar: React.FC = () => {
   
   return (
     <div className="bg-white rounded-xl shadow-md overflow-hidden">
-      <div className="p-4 bg-secondary-50 border-b border-gray-200">
+      <div className="p-4 bg-purple-50 border-b border-gray-200">
         <div className="flex justify-between items-center">
           <h3 className="font-semibold text-gray-800">
             {format(currentMonth, 'MMMM yyyy')}
@@ -79,17 +79,17 @@ const Calendar: React.FC = () => {
               key={day.toString()}
               whileHover={{ scale: hasClasses ? 1.02 : 1 }}
               className={`bg-white p-2 h-24 overflow-hidden ${hasClasses ? 'cursor-pointer' : ''} ${
-                isToday(day) ? 'bg-primary-50' : ''
+                isToday(day) ? 'bg-green-50' : ''
               }`}
             >
               <div className="flex justify-between items-start">
                 <span className={`text-sm font-medium ${
-                  isToday(day) ? 'bg-primary-500 text-white w-6 h-6 rounded-full flex items-center justify-center' : 'text-gray-700'
+                  isToday(day) ? 'bg-green-500 text-white w-6 h-6 rounded-full flex items-center justify-center' : 'text-gray-700'
                 }`}>
                   {format(day, 'd')}
                 </span>
                 {hasClasses && (
-                  <span className="text-xs bg-secondary-100 text-secondary-800 px-1.5 py-0.5 rounded-full">
+                  <span className="text-xs bg-purple-100 text-purple-800 px-1.5 py-0.5 rounded-full">
                     {dayClasses.length}
                   </span>
                 )}
@@ -99,7 +99,7 @@ const Calendar: React.FC = () => {
                 {dayClasses.slice(0, 2).map((cls, idx) => (
                   <div 
                     key={idx} 
-                    className="text-xs truncate bg-secondary-50 text-secondary-700 p-1 rounded"
+                    className="text-xs truncate bg-purple-50 text-purple-700 p-1 rounded"
                   >
                     {cls.time} - {cls.title}
                   </div>
