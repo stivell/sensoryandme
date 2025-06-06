@@ -18,7 +18,7 @@ const AboutPage: React.FC = () => {
             className="text-center max-w-3xl mx-auto"
           >
             <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-              About <span className="text-secondary-600">Sensory & ME</span>
+              About <span className="text-secondary-600">Learn by Sensory</span>
             </h1>
             <p className="text-xl text-gray-600">
               Discover our story, our mission, and how we're transforming child development 
@@ -40,7 +40,7 @@ const AboutPage: React.FC = () => {
               <h2 className="text-3xl font-bold text-gray-900 mb-6">Our Story</h2>
               <div className="space-y-4 text-gray-700">
                 <p>
-                  Sensory & ME was founded by Jysseka Campbell-George, a Certified Occupational Therapy 
+                  Learn by Sensory was founded by Jysseka Campbell-George, a Certified Occupational Therapy 
                   Assistant (COTA-L) with a passion for helping children develop through play.
                 </p>
                 <p>
@@ -81,7 +81,7 @@ const AboutPage: React.FC = () => {
             >
               <h2 className="text-3xl font-bold text-gray-900 mb-4">Our Mission & Values</h2>
               <p className="text-xl text-gray-600">
-                At Sensory & ME, we're committed to supporting every child's development journey 
+                At Learn by Sensory, we're committed to supporting every child's development journey 
                 through the power of purposeful play in a supportive community.
               </p>
             </motion.div>

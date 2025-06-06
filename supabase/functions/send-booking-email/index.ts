@@ -57,15 +57,15 @@ serve(async (req) => {
     // Send confirmation email to parent
     await sgMail.send({
       to,
-      from: 'bookings@sensorymeplay.org',
+      from: 'bookings@learnbysensory.com', // Updated domain
       templateId: 'd-123456789', // Replace with your SendGrid template ID
       dynamicTemplateData: templateData,
     });
 
     // Send notification to admin
     await sgMail.send({
-      to: 'admin@sensorymeplay.org',
-      from: 'bookings@sensorymeplay.org',
+      to: 'admin@learnbysensory.com', // Updated domain
+      from: 'bookings@learnbysensory.com', // Updated domain
       templateId: 'd-987654321', // Replace with your admin notification template ID
       dynamicTemplateData: {
         ...templateData,

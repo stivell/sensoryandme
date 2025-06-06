@@ -5,7 +5,7 @@ import { Star } from 'lucide-react';
 const testimonials = [
   {
     id: 1,
-    content: "Sensory & ME has been transformative for my son. The structured play approach has helped him develop social skills in a way that feels natural and fun for him.",
+    content: "Learn by Sensory has been transformative for my son. The structured play approach has helped him develop social skills in a way that feels natural and fun for him.",
     author: "Sarah M.",
     relation: "Parent of a 6-year-old with ASD",
     stars: 5

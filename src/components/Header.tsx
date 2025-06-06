@@ -94,7 +94,7 @@ const Header = () => {
           >
             <img 
               src="/images/Purple & Green Playful Children's Logo.png" 
-              alt="Sensory & ME Logo" 
+              alt="Learn by Sensory Logo" 
               className="h-full w-full object-contain"
             />
           </motion.div>
@@ -105,9 +105,9 @@ const Header = () => {
               isScrolled ? 'text-secondary-700' : 'text-secondary-800'
             }`}
           >
-            <span className="text-primary-600">Sensory</span>
-            <span className="text-secondary-600">&nbsp;&&nbsp;</span>
-            <span className="text-accent-600">ME</span>
+            <span className="text-primary-600">Learn</span>
+            <span className="text-secondary-600">&nbsp;by&nbsp;</span>
+            <span className="text-accent-600">Sensory</span>
           </motion.div>
         </Link>
 
@@ -128,6 +128,12 @@ const Header = () => {
           ))}
           {user ? (
             <div className="flex items-center space-x-4">
+              <Link 
+                to="/my-bookings"
+                className="font-medium text-gray-800 hover:text-secondary-600"
+              >
+                My Bookings
+              </Link>
               {isAdmin && (
                 <Link 
                   to="/admin"
@@ -198,6 +204,12 @@ const Header = () => {
               ))}
               {user ? (
                 <>
+                  <Link 
+                    to="/my-bookings"
+                    className="font-medium py-2 text-gray-800 hover:text-secondary-600"
+                  >
+                    My Bookings
+                  </Link>
                   {isAdmin && (
                     <Link 
                       to="/admin"

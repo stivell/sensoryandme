@@ -11,7 +11,7 @@ const Footer: React.FC = () => {
       <div className="container-custom">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
           <div className="md:col-span-2">
-            <h3 className="font-bold text-secondary-700 mb-4">Sensory & ME</h3>
+            <h3 className="font-bold text-secondary-700 mb-4">Learn by Sensory</h3>
             <p className="mb-6 text-gray-600 max-w-md">
               Supporting child development through intentional play. Our AI-Powered Structured 
               Play Groups offer a unique approach to building essential skills in a supportive, 
@@ -28,7 +28,7 @@ const Footer: React.FC = () => {
                 <Instagram className="h-6 w-6" />
               </a>
               <a 
-                href="mailto:info@sensorymeplay.org" 
+                href="mailto:info@learnbysensory.com" 
                 className="text-gray-600 hover:text-secondary-600 transition-colors"
                 aria-label="Email"
               >
@@ -58,7 +58,7 @@ const Footer: React.FC = () => {
         <div className="pt-8 border-t border-gray-200">
           <div className="flex flex-col md:flex-row justify-between items-center">
             <div className="text-gray-500 text-sm mb-4 md:mb-0">
-              &copy; {currentYear} Sensory & ME. All rights reserved.
+              &copy; {currentYear} Learn by Sensory. All rights reserved.
             </div>
             <div className="flex space-x-4 text-gray-500 text-sm">
               <Link to="/privacy" className="hover:text-secondary-600 transition-colors">Privacy Policy</Link>

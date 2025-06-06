@@ -36,7 +36,7 @@ const TermsOfServicePage: React.FC = () => {
               </div>
               <div className="space-y-4 text-gray-700">
                 <p>
-                  By accessing or using Sensory & ME's services, you agree to be bound by these Terms of Service. 
+                  By accessing or using Learn by Sensory's services, you agree to be bound by these Terms of Service. 
                   If you disagree with any part of the terms, you may not access our services.
                 </p>
                 <p>
@@ -124,7 +124,7 @@ const TermsOfServicePage: React.FC = () => {
                 <div className="bg-gray-50 p-4 rounded-lg mt-8">
                   <p className="font-medium">Contact Information</p>
                   <p>For questions about these terms, please contact us:</p>
-                  <p>Email: legal@sensorymeplay.org</p>
+                  <p>Email: info@learnbysensory.com</p>
                   <p>Phone: (555) 123-4567</p>
                   <p>Address: 12334 SilverSpring Place, Portland, OR 97201</p>
                 </div>

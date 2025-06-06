@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Mail, Phone, MapPin, Instagram } from 'lucide-react';
 import { motion } from 'framer-motion';
 import ContactForm from '../components/ContactForm';
@@ -44,7 +44,7 @@ const ContactPage: React.FC = () => {
                   </div>
                   <div>
                     <h3 className="text-lg font-semibold mb-1">Email</h3>
-                    <p className="text-gray-700">info@sensorymeplay.org</p>
+                    <p className="text-gray-700">info@learnbysensory.com</p>
                     <p className="text-sm text-gray-500 mt-1">
                       We aim to respond to all inquiries within 24 hours.
                     </p>
@@ -92,7 +92,7 @@ const ContactPage: React.FC = () => {
                   </div>
                   <p className="text-gray-700">
                     Jysseka is a Certified Occupational Therapy Assistant (COTA-L) with extensive 
-                    experience supporting children with diverse needs. She founded Sensory & ME to 
+                    experience supporting children with diverse needs. She founded Learn by Sensory to 
                     create structured play opportunities that foster development in a fun, supportive 
                     environment.
                   </p>

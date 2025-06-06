@@ -11,7 +11,7 @@ const LocationDetailPage: React.FC = () => {
   const { locations, classes } = useAppContext();
   
   const location = locations.find(l => l.id === id);
-  const locationClasses = classes.filter(c => c.locationId === id);
+  const locationClasses = classes.filter(c => c.location_id === id);
   
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -62,7 +62,7 @@ const LocationDetailPage: React.FC = () => {
               <div className="mb-8">
                 <div className="rounded-xl overflow-hidden shadow-md mb-6">
                   <img 
-                    src={location.imageUrl} 
+                    src={location.image_url} 
                     alt={location.name} 
                     className="w-full h-auto"
                   />
@@ -132,7 +132,7 @@ const LocationDetailPage: React.FC = () => {
                       </div>
                       <div className="flex items-center text-gray-600">
                         <Mail className="h-4 w-4 mr-2 text-secondary-500" />
-                        <span>info@sensorymeplay.org</span>
+                        <span>info@learnbysensory.com</span>
                       </div>
                     </div>
                     

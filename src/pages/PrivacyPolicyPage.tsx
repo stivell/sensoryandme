@@ -116,8 +116,8 @@ const PrivacyPolicyPage: React.FC = () => {
                   please contact us at:
                 </p>
                 <div className="bg-gray-50 p-4 rounded-lg mt-4">
-                  <p className="font-medium">Sensory & ME</p>
-                  <p>Email: privacy@sensorymeplay.org</p>
+                  <p className="font-medium">Learn by Sensory</p>
+                  <p>Email: info@learnbysensory.com</p>
                   <p>Phone: (555) 123-4567</p>
                   <p>Address: 12334 SilverSpring Place, Portland, OR 97201</p>
                 </div>

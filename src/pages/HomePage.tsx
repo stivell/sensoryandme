@@ -71,7 +71,7 @@ const HomePage: React.FC = () => {
                 className="space-y-6 text-lg"
               >
                 <p>
-                  At Sensory & ME, we believe in the transformative power of purposeful play. 
+                  At Learn by Sensory, we believe in the transformative power of purposeful play. 
                   Our AI-powered approach helps us design activities that are perfectly tailored 
                   to each child's developmental needs.
                 </p>
