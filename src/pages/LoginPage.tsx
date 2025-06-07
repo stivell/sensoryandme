@@ -153,6 +153,17 @@ const LoginPage: React.FC = () => {
                 </div>
               </div>
 
+              <div className="flex items-center justify-between">
+                <div className="text-sm">
+                  <Link 
+                    to="/forgot-password" 
+                    className="text-purple-600 hover:text-purple-700 font-medium"
+                  >
+                    Forgot your password?
+                  </Link>
+                </div>
+              </div>
+
               <button
                 type="submit"
                 disabled={isLoading}
@@ -169,16 +180,6 @@ const LoginPage: React.FC = () => {
                   Sign up here
                 </Link>
               </p>
-            </div>
-
-            <div className="mt-6 pt-6 border-t border-gray-200">
-              <div className="bg-purple-50 rounded-lg p-4">
-                <h3 className="font-medium text-purple-800 mb-2">Demo Accounts</h3>
-                <div className="text-sm text-purple-700 space-y-1">
-                  <p><strong>Admin:</strong> admin@sensorymeplay.org / Admin123!</p>
-                  <p><strong>Parent:</strong> parent@example.com / Parent123!</p>
-                </div>
-              </div>
             </div>
           </motion.div>
         </div>
