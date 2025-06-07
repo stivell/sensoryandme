@@ -1,243 +1,268 @@
-import React, { useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import { Heart, Users, Lightbulb, Brain, ArrowRight } from 'lucide-react';
+import React from 'react';
 import { motion } from 'framer-motion';
+import { Heart, Users, Lightbulb, Shield, Award, Clock } from 'lucide-react';
 
 const AboutPage: React.FC = () => {
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
-  
   return (
-    <>
-      <section className="pt-28 pb-10 bg-gradient-to-b from-secondary-50 to-white">
-        <div className="container-custom">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="text-center max-w-3xl mx-auto"
-          >
-            <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-              About <span className="text-secondary-600">Learn by Sensory</span>
-            </h1>
-            <p className="text-xl text-gray-600">
-              Discover our story, our mission, and how we're transforming child development 
-              through AI-powered structured play.
-            </p>
-          </motion.div>
-        </div>
-      </section>
-      
-      <section className="py-12">
-        <div className="container-custom">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-16">
+    <div className="min-h-screen pt-24 pb-16">
+      <div className="container-custom">
+        {/* Hero Section */}
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="text-center mb-16"
+        >
+          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+            About <span className="text-purple-600">Learn by Sensory</span>
+          </h1>
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+            We believe every child deserves the opportunity to learn, grow, and thrive through 
+            purposeful play. Our AI-powered structured play groups create inclusive environments 
+            where children develop essential skills while having fun.
+          </p>
+        </motion.div>
+
+        {/* Mission Section */}
+        <section className="mb-16">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <motion.div
               initial={{ opacity: 0, x: -20 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.5 }}
+              className="order-2 lg:order-1"
             >
-              <h2 className="text-3xl font-bold text-gray-900 mb-6">Our Story</h2>
-              <div className="space-y-4 text-gray-700">
-                <p>
-                  Learn by Sensory was founded by Jysseka Campbell-George, a Certified Occupational Therapy 
-                  Assistant (COTA-L) with a passion for helping children develop through play.
-                </p>
-                <p>
-                  After years of working with children with diverse needs, Jysseka recognized that 
-                  structured, intentional play could make a significant difference in developmental 
-                  outcomes, especially for children with Autism Spectrum Disorder (ASD).
-                </p>
-                <p>
-                  What began as a small initiative to provide specialized play opportunities has grown 
-                  into a comprehensive program that leverages AI insights to create truly personalized 
-                  development experiences through play.
-                </p>
-              </div>
+              <h2 className="text-3xl font-bold text-gray-900 mb-6">Our Mission</h2>
+              <p className="text-gray-700 mb-6 leading-relaxed">
+                At Learn by Sensory, we're dedicated to supporting child development through 
+                intentional, structured play experiences. Our approach combines research-backed 
+                methodologies with innovative AI technology to create personalized learning 
+                environments for every child.
+              </p>
+              <p className="text-gray-700 leading-relaxed">
+                We understand that every child is unique, with their own strengths, challenges, 
+                and learning style. That's why our programs are designed to be inclusive, 
+                adaptive, and supportive of all children, including those with special needs 
+                and developmental differences.
+              </p>
             </motion.div>
             
             <motion.div
               initial={{ opacity: 0, x: 20 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-              className="rounded-xl overflow-hidden shadow-xl"
+              className="order-1 lg:order-2"
             >
               <img 
-                src="https://images.pexels.com/photos/8535239/pexels-photo-8535239.jpeg" 
-                alt="Children engaged in structured play" 
-                className="w-full h-auto"
+                src="https://images.pexels.com/photos/8613261/pexels-photo-8613261.jpeg" 
+                alt="Children engaged in structured play"
+                className="w-full h-96 object-cover rounded-xl shadow-lg"
               />
             </motion.div>
           </div>
-          
-          <div className="mb-16">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5 }}
-              className="text-center max-w-3xl mx-auto mb-12"
-            >
-              <h2 className="text-3xl font-bold text-gray-900 mb-4">Our Mission & Values</h2>
-              <p className="text-xl text-gray-600">
-                At Learn by Sensory, we're committed to supporting every child's development journey 
-                through the power of purposeful play in a supportive community.
-              </p>
-            </motion.div>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: 0.1 }}
-                className="bg-white rounded-xl p-6 shadow-md hover:shadow-lg transition-shadow"
-              >
-                <Heart className="h-12 w-12 text-secondary-500 mb-4" />
-                <h3 className="text-xl font-semibold mb-2">Inclusive & Supportive</h3>
-                <p className="text-gray-600">
-                  We create welcoming environments where every child feels valued and supported, 
-                  regardless of their abilities or learning style. Our approach celebrates 
-                  neurodiversity and embraces individual differences.
-                </p>
-              </motion.div>
-              
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: 0.2 }}
-                className="bg-white rounded-xl p-6 shadow-md hover:shadow-lg transition-shadow"
-              >
-                <Lightbulb className="h-12 w-12 text-primary-500 mb-4" />
-                <h3 className="text-xl font-semibold mb-2">Skill-Focused Activities</h3>
-                <p className="text-gray-600">
-                  Every activity is purposefully designed to build specific developmental skills. 
-                  We believe in making learning fun and engaging, ensuring children are developing 
-                  crucial abilities while simply enjoying play.
-                </p>
-              </motion.div>
-              
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: 0.3 }}
-                className="bg-white rounded-xl p-6 shadow-md hover:shadow-lg transition-shadow"
-              >
-                <Users className="h-12 w-12 text-accent-500 mb-4" />
-                <h3 className="text-xl font-semibold mb-2">Small Group Sizes</h3>
-                <p className="text-gray-600">
-                  We maintain small group sizes to ensure each child receives the attention and 
-                  support they need. This creates an optimal environment for social learning and 
-                  allows our facilitators to adapt to individual needs.
-                </p>
-              </motion.div>
-              
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: 0.4 }}
-                className="bg-white rounded-xl p-6 shadow-md hover:shadow-lg transition-shadow"
-              >
-                <Brain className="h-12 w-12 text-success-500 mb-4" />
-                <h3 className="text-xl font-semibold mb-2">AI-Informed Approach</h3>
-                <p className="text-gray-600">
-                  We leverage artificial intelligence to analyze developmental patterns and optimize 
-                  our activities. This technology helps us tailor experiences that are developmentally 
-                  appropriate and effective for each child's unique needs.
-                </p>
-              </motion.div>
-            </div>
-          </div>
-          
-          <div className="mb-16">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5 }}
-              className="text-center max-w-3xl mx-auto mb-12"
-            >
-              <h2 className="text-3xl font-bold text-gray-900 mb-4">Our Approach</h2>
-              <p className="text-xl text-gray-600">
-                We believe in the power of structured play to support child development, especially
-                for children with unique learning needs.
-              </p>
-            </motion.div>
-            
-            <div className="bg-white rounded-xl shadow-md overflow-hidden">
-              <div className="grid grid-cols-1 lg:grid-cols-2">
-                <motion.div
-                  initial={{ opacity: 0, x: -20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: 0.2 }}
-                  className="p-8"
-                >
-                  <h3 className="text-2xl font-bold text-gray-900 mb-6">
-                    Why Structured Play?
-                  </h3>
-                  
-                  <div className="space-y-4 text-gray-700">
-                    <p>
-                      Unlike traditional free play, our structured play approach is designed with 
-                      specific developmental goals in mind. Each session is carefully crafted to 
-                      build skills in areas such as:
-                    </p>
-                    
-                    <ul className="list-disc pl-5 space-y-2">
-                      <li>Social interaction and communication</li>
-                      <li>Fine and gross motor development</li>
-                      <li>Sensory processing and integration</li>
-                      <li>Emotional regulation and self-awareness</li>
-                      <li>Cognitive skills and problem-solving</li>
-                    </ul>
-                    
-                    <p>
-                      By combining the joy of play with intentional learning opportunities, we create
-                      an environment where children can thrive and develop essential life skills.
-                    </p>
-                  </div>
-                </motion.div>
-                
-                <motion.div
-                  initial={{ opacity: 0, x: 20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: 0.4 }}
-                >
-                  <img 
-                    src="https://images.pexels.com/photos/8535226/pexels-photo-8535226.jpeg" 
-                    alt="Children in a structured play session" 
-                    className="w-full h-full object-cover"
-                  />
-                </motion.div>
-              </div>
-            </div>
-          </div>
-          
+        </section>
+
+        {/* Values Section */}
+        <section className="mb-16">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
-            className="text-center"
+            className="text-center mb-12"
           >
-            <h2 className="text-3xl font-bold text-gray-900 mb-6">Ready to Join Us?</h2>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto mb-8">
-              Experience the difference our structured play approach can make for your child's development.
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">Our Core Values</h2>
+            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+              These principles guide everything we do and shape the experience we create for children and families.
             </p>
-            <Link to="/classes" className="btn-primary inline-flex items-center">
-              Browse Our Classes
-              <ArrowRight className="ml-2 h-5 w-5" />
-            </Link>
           </motion.div>
-        </div>
-      </section>
-    </>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {[
+              {
+                icon: <Heart className="h-8 w-8 text-purple-500" />,
+                title: "Inclusive & Welcoming",
+                description: "Every child is valued and supported, regardless of their abilities or challenges."
+              },
+              {
+                icon: <Users className="h-8 w-8 text-green-500" />,
+                title: "Community Focused",
+                description: "Building connections between children, families, and our broader community."
+              },
+              {
+                icon: <Lightbulb className="h-8 w-8 text-purple-600" />,
+                title: "Evidence-Based",
+                description: "Our methods are grounded in research and proven developmental practices."
+              },
+              {
+                icon: <Shield className="h-8 w-8 text-green-600" />,
+                title: "Safe & Supportive",
+                description: "Creating environments where children feel secure to explore and learn."
+              },
+              {
+                icon: <Award className="h-8 w-8 text-purple-500" />,
+                title: "Excellence",
+                description: "Committed to the highest standards in child development and family support."
+              },
+              {
+                icon: <Clock className="h-8 w-8 text-green-500" />,
+                title: "Responsive",
+                description: "Adapting our approach to meet each child's individual needs and pace."
+              }
+            ].map((value, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1 }}
+                className="bg-white rounded-xl p-6 shadow-md hover:shadow-lg transition-shadow"
+              >
+                <div className="mb-4">{value.icon}</div>
+                <h3 className="text-xl font-semibold mb-3 text-gray-800">{value.title}</h3>
+                <p className="text-gray-600">{value.description}</p>
+              </motion.div>
+            ))}
+          </div>
+        </section>
+
+        {/* Approach Section */}
+        <section className="mb-16">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+            >
+              <img 
+                src="https://images.pexels.com/photos/8612967/pexels-photo-8612967.jpeg" 
+                alt="AI-powered learning environment"
+                className="w-full h-96 object-cover rounded-xl shadow-lg"
+              />
+            </motion.div>
+            
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+            >
+              <h2 className="text-3xl font-bold text-gray-900 mb-6">Our Approach</h2>
+              <div className="space-y-4">
+                <div className="flex items-start">
+                  <div className="w-3 h-3 bg-purple-500 rounded-full mt-2 mr-4 flex-shrink-0"></div>
+                  <div>
+                    <h4 className="font-semibold text-gray-800 mb-1">Structured Play</h4>
+                    <p className="text-gray-600">Carefully designed activities that balance fun with skill development.</p>
+                  </div>
+                </div>
+                
+                <div className="flex items-start">
+                  <div className="w-3 h-3 bg-green-500 rounded-full mt-2 mr-4 flex-shrink-0"></div>
+                  <div>
+                    <h4 className="font-semibold text-gray-800 mb-1">AI-Powered Personalization</h4>
+                    <p className="text-gray-600">Technology that adapts to each child's unique learning style and pace.</p>
+                  </div>
+                </div>
+                
+                <div className="flex items-start">
+                  <div className="w-3 h-3 bg-purple-500 rounded-full mt-2 mr-4 flex-shrink-0"></div>
+                  <div>
+                    <h4 className="font-semibold text-gray-800 mb-1">Small Group Settings</h4>
+                    <p className="text-gray-600">Intimate environments that foster connection and individual attention.</p>
+                  </div>
+                </div>
+                
+                <div className="flex items-start">
+                  <div className="w-3 h-3 bg-green-500 rounded-full mt-2 mr-4 flex-shrink-0"></div>
+                  <div>
+                    <h4 className="font-semibold text-gray-800 mb-1">Expert Facilitation</h4>
+                    <p className="text-gray-600">Trained professionals who understand child development and special needs.</p>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        </section>
+
+        {/* Team Section */}
+        <section className="mb-16">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-12"
+          >
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">Meet Our Founder</h2>
+            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+              Learn by Sensory was founded with a passion for supporting every child's unique journey.
+            </p>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="max-w-4xl mx-auto bg-white rounded-xl shadow-lg overflow-hidden"
+          >
+            <div className="md:flex">
+              <div className="md:w-1/3">
+                <img 
+                  src="https://images.pexels.com/photos/8613089/pexels-photo-8613089.jpeg" 
+                  alt="Founder"
+                  className="w-full h-64 md:h-full object-cover"
+                />
+              </div>
+              <div className="md:w-2/3 p-8">
+                <h3 className="text-2xl font-bold text-gray-900 mb-4">Jysseka Campbell-George</h3>
+                <p className="text-gray-600 mb-4 leading-relaxed">
+                  With over a decade of experience in child development and special education, 
+                  Jysseka founded Learn by Sensory to bridge the gap between traditional therapy 
+                  and everyday play experiences.
+                </p>
+                <p className="text-gray-600 mb-4 leading-relaxed">
+                  Her vision combines cutting-edge AI technology with time-tested developmental 
+                  approaches to create programs that truly meet children where they are and help 
+                  them grow at their own pace.
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  <span className="bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-sm">
+                    Child Development Specialist
+                  </span>
+                  <span className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm">
+                    Special Education Expert
+                  </span>
+                  <span className="bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-sm">
+                    AI Innovation Leader
+                  </span>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        </section>
+
+        {/* Call to Action */}
+        <motion.section
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="bg-gradient-to-r from-purple-50 to-green-50 rounded-2xl p-8 md:p-12 text-center"
+        >
+          <h2 className="text-3xl font-bold text-gray-900 mb-4">
+            Ready to Support Your Child's Development?
+          </h2>
+          <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
+            Join our community of families who are discovering the power of structured play 
+            for their children's growth and development.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <a href="/classes" className="btn-primary">
+              Explore Our Classes
+            </a>
+            <a href="/contact" className="btn-outline">
+              Get in Touch
+            </a>
+          </div>
+        </motion.section>
+      </div>
+    </div>
   );
 };
 

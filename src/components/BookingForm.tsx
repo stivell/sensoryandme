@@ -230,7 +230,7 @@ const BookingForm: React.FC<BookingFormProps> = ({
           {currentStep === 1 && (
             <div className="space-y-4">
               <div>
-                <label htmlFor="parentName\" className="block text-sm font-medium text-gray-700 mb-1">
+                <label htmlFor="parentName" className="block text-sm font-medium text-gray-700 mb-1">
                   Parent/Guardian Name *
                 </label>
                 <input

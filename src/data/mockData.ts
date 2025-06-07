@@ -18,7 +18,7 @@ export const mockLocations: Location[] = [
     city: 'Portland',
     state: 'OR',
     zip: '97201',
-    imageUrl: 'https://images.pexels.com/photos/8613089/pexels-photo-8613089.jpeg'
+    image_url: 'https://images.pexels.com/photos/8613089/pexels-photo-8613089.jpeg'
   },
   {
     id: 'loc2',
@@ -27,7 +27,7 @@ export const mockLocations: Location[] = [
     city: 'Portland',
     state: 'OR',
     zip: '97215',
-    imageUrl: 'https://images.pexels.com/photos/8612927/pexels-photo-8612927.jpeg'
+    image_url: 'https://images.pexels.com/photos/8612927/pexels-photo-8612927.jpeg'
   },
   {
     id: 'loc3',
@@ -36,7 +36,7 @@ export const mockLocations: Location[] = [
     city: 'Portland',
     state: 'OR',
     zip: '97221',
-    imageUrl: 'https://images.pexels.com/photos/8613335/pexels-photo-8613335.jpeg'
+    image_url: 'https://images.pexels.com/photos/8613335/pexels-photo-8613335.jpeg'
   }
 ];
 
@@ -51,10 +51,10 @@ export const mockClasses: Class[] = [
     capacity: 8,
     enrolled: 5,
     price: 35,
-    locationId: 'loc1',
-    ageGroup: '3-5',
+    location_id: 'loc1',
+    age_group: '3-5',
     skills: ['Sensory Processing', 'Fine Motor', 'Social Interaction'],
-    imageUrl: 'https://images.pexels.com/photos/8535925/pexels-photo-8535925.jpeg'
+    image_url: 'https://images.pexels.com/photos/8535925/pexels-photo-8535925.jpeg'
   },
   {
     id: 'class2',
@@ -66,10 +66,10 @@ export const mockClasses: Class[] = [
     capacity: 8,
     enrolled: 3,
     price: 35,
-    locationId: 'loc2',
-    ageGroup: '6-8',
+    location_id: 'loc2',
+    age_group: '6-8',
     skills: ['Social Skills', 'Communication', 'Emotional Regulation'],
-    imageUrl: 'https://images.pexels.com/photos/8613165/pexels-photo-8613165.jpeg'
+    image_url: 'https://images.pexels.com/photos/8613165/pexels-photo-8613165.jpeg'
   },
   {
     id: 'class3',
@@ -81,10 +81,10 @@ export const mockClasses: Class[] = [
     capacity: 10,
     enrolled: 6,
     price: 30,
-    locationId: 'loc3',
-    ageGroup: '3-5',
+    location_id: 'loc3',
+    age_group: '3-5',
     skills: ['Gross Motor', 'Coordination', 'Body Awareness'],
-    imageUrl: 'https://images.pexels.com/photos/8612967/pexels-photo-8612967.jpeg'
+    image_url: 'https://images.pexels.com/photos/8612967/pexels-photo-8612967.jpeg'
   },
   {
     id: 'class4',
@@ -96,10 +96,10 @@ export const mockClasses: Class[] = [
     capacity: 8,
     enrolled: 4,
     price: 35,
-    locationId: 'loc1',
-    ageGroup: '4-6',
+    location_id: 'loc1',
+    age_group: '4-6',
     skills: ['Language', 'Listening', 'Pre-literacy'],
-    imageUrl: 'https://images.pexels.com/photos/8613261/pexels-photo-8613261.jpeg'
+    image_url: 'https://images.pexels.com/photos/8613261/pexels-photo-8613261.jpeg'
   },
   {
     id: 'class5',
@@ -111,10 +111,10 @@ export const mockClasses: Class[] = [
     capacity: 8,
     enrolled: 7,
     price: 40,
-    locationId: 'loc2',
-    ageGroup: '6-8',
+    location_id: 'loc2',
+    age_group: '6-8',
     skills: ['Problem Solving', 'Critical Thinking', 'Curiosity'],
-    imageUrl: 'https://images.pexels.com/photos/8612927/pexels-photo-8612927.jpeg'
+    image_url: 'https://images.pexels.com/photos/8612927/pexels-photo-8612927.jpeg'
   },
   {
     id: 'class6',
@@ -126,10 +126,10 @@ export const mockClasses: Class[] = [
     capacity: 10,
     enrolled: 5,
     price: 35,
-    locationId: 'loc3',
-    ageGroup: '4-6',
+    location_id: 'loc3',
+    age_group: '4-6',
     skills: ['Fine Motor', 'Creativity', 'Self-expression'],
-    imageUrl: 'https://images.pexels.com/photos/8613335/pexels-photo-8613335.jpeg'
+    image_url: 'https://images.pexels.com/photos/8613335/pexels-photo-8613335.jpeg'
   },
   {
     id: 'class7',
@@ -141,10 +141,10 @@ export const mockClasses: Class[] = [
     capacity: 6,
     enrolled: 3,
     price: 30,
-    locationId: 'loc1',
-    ageGroup: '2-3',
+    location_id: 'loc1',
+    age_group: '2-3',
     skills: ['Motor Skills', 'Language', 'Social Awareness'],
-    imageUrl: 'https://images.pexels.com/photos/8612906/pexels-photo-8612906.jpeg'
+    image_url: 'https://images.pexels.com/photos/8612906/pexels-photo-8612906.jpeg'
   },
   {
     id: 'class8',
@@ -156,10 +156,10 @@ export const mockClasses: Class[] = [
     capacity: 8,
     enrolled: 4,
     price: 35,
-    locationId: 'loc2',
-    ageGroup: '6-8',
+    location_id: 'loc2',
+    age_group: '6-8',
     skills: ['Emotional Regulation', 'Focus', 'Self-awareness'],
-    imageUrl: 'https://images.pexels.com/photos/8613019/pexels-photo-8613019.jpeg'
+    image_url: 'https://images.pexels.com/photos/8613019/pexels-photo-8613019.jpeg'
   },
   {
     id: 'class9',
@@ -171,10 +171,10 @@ export const mockClasses: Class[] = [
     capacity: 10,
     enrolled: 7,
     price: 35,
-    locationId: 'loc3',
-    ageGroup: '3-5',
+    location_id: 'loc3',
+    age_group: '3-5',
     skills: ['Rhythm', 'Coordination', 'Listening'],
-    imageUrl: 'https://images.pexels.com/photos/8612977/pexels-photo-8612977.jpeg'
+    image_url: 'https://images.pexels.com/photos/8612977/pexels-photo-8612977.jpeg'
   },
   {
     id: 'class10',
@@ -186,9 +186,9 @@ export const mockClasses: Class[] = [
     capacity: 8,
     enrolled: 6,
     price: 45,
-    locationId: 'loc1',
-    ageGroup: '2-4',
+    location_id: 'loc1',
+    age_group: '2-4',
     skills: ['Parent-Child Bonding', 'Guided Play', 'Communication'],
-    imageUrl: 'https://images.pexels.com/photos/8612916/pexels-photo-8612916.jpeg'
+    image_url: 'https://images.pexels.com/photos/8612916/pexels-photo-8612916.jpeg'
   }
 ];

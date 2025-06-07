@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { AlertCircle, CheckCircle, Mail, Settings } from 'lucide-react';
+import { AlertCircle, CheckCircle, Mail } from 'lucide-react';
 
 const ContactForm: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -12,40 +12,11 @@ const ContactForm: React.FC = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [isTestingEmail, setIsTestingEmail] = useState(false);
-  const [emailTestResult, setEmailTestResult] = useState<any>(null);
   
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
     setError(null);
-  };
-
-  const testEmailSetup = async () => {
-    setIsTestingEmail(true);
-    setEmailTestResult(null);
-    
-    try {
-      const response = await fetch(
-        `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/test-email`,
-        {
-          method: 'GET',
-          headers: {
-            'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`
-          },
-        }
-      );
-
-      const result = await response.json();
-      setEmailTestResult(result);
-    } catch (err) {
-      setEmailTestResult({
-        error: 'Failed to test email setup',
-        details: err instanceof Error ? err.message : 'Unknown error'
-      });
-    } finally {
-      setIsTestingEmail(false);
-    }
   };
   
   const handleSubmit = async (e: React.FormEvent) => {
@@ -105,66 +76,6 @@ const ContactForm: React.FC = () => {
   
   return (
     <div className="bg-white rounded-xl shadow-md p-6 md:p-8">
-      {/* Email Test Section */}
-      <div className="mb-6 p-4 bg-gray-50 rounded-lg">
-        <div className="flex items-center justify-between mb-3">
-          <h3 className="font-semibold text-gray-800 flex items-center">
-            <Settings className="h-5 w-5 mr-2" />
-            Email System Test
-          </h3>
-          <button
-            onClick={testEmailSetup}
-            disabled={isTestingEmail}
-            className="btn-outline text-sm px-3 py-1"
-          >
-            {isTestingEmail ? 'Testing...' : 'Test Email Setup'}
-          </button>
-        </div>
-        
-        {emailTestResult && (
-          <div className="mt-3 p-3 bg-white rounded border text-sm">
-            {emailTestResult.error ? (
-              <div className="text-error-600">
-                <div className="flex items-center mb-2">
-                  <AlertCircle className="h-4 w-4 mr-2" />
-                  <span className="font-medium">Test Failed</span>
-                </div>
-                <p>{emailTestResult.error}</p>
-                {emailTestResult.details && (
-                  <p className="text-xs mt-1 text-gray-500">{emailTestResult.details}</p>
-                )}
-              </div>
-            ) : (
-              <div>
-                <div className="flex items-center mb-2">
-                  <CheckCircle className="h-4 w-4 mr-2 text-success-600" />
-                  <span className="font-medium">Email System Status</span>
-                </div>
-                <div className="space-y-1">
-                  <div className="flex justify-between">
-                    <span>Environment Variables:</span>
-                    <span className={emailTestResult.tests?.environmentVariables === 'PASS' ? 'text-success-600' : 'text-error-600'}>
-                      {emailTestResult.tests?.environmentVariables || 'Unknown'}
-                    </span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span>SendGrid Connection:</span>
-                    <span className={emailTestResult.tests?.sendGridConnection === 'PASS' ? 'text-success-600' : 'text-error-600'}>
-                      {emailTestResult.tests?.sendGridConnection || 'Unknown'}
-                    </span>
-                  </div>
-                </div>
-                {emailTestResult.timestamp && (
-                  <p className="text-xs text-gray-500 mt-2">
-                    Tested at: {new Date(emailTestResult.timestamp).toLocaleString()}
-                  </p>
-                )}
-              </div>
-            )}
-          </div>
-        )}
-      </div>
-
       {isSubmitted ? (
         <motion.div
           initial={{ opacity: 0 }}

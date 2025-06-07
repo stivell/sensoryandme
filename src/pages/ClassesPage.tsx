@@ -2,83 +2,81 @@ import React, { useEffect } from 'react';
 import { useAppContext } from '../context/AppContext';
 import ClassCard from '../components/ClassCard';
 import ClassFilter from '../components/ClassFilter';
-import Calendar from '../components/Calendar';
 import { motion } from 'framer-motion';
+import { Search, Filter } from 'lucide-react';
 
 const ClassesPage: React.FC = () => {
   const { filteredClasses } = useAppContext();
-  
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
-  
+
   return (
-    <>
-      <section className="pt-28 pb-10 bg-gradient-to-b from-purple-50 to-white">
-        <div className="container-custom">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="text-center max-w-3xl mx-auto"
-          >
-            <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-              Find the Perfect <span className="text-purple-600">Play Group</span>
-            </h1>
-            <p className="text-xl text-gray-600 mb-8">
-              Browse our upcoming sessions and find the perfect match for your child's needs and interests.
-            </p>
-          </motion.div>
-        </div>
-      </section>
-      
-      <section className="py-12">
-        <div className="container-custom">
-          <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-            <div className="lg:col-span-1">
-              <div className="sticky top-24">
-                <ClassFilter />
-                
-                <div className="mt-8 hidden lg:block">
-                  <Calendar />
-                </div>
-              </div>
-            </div>
-            
-            <div className="lg:col-span-3">
-              <div className="mb-6 flex justify-between items-center">
-                <h2 className="text-2xl font-bold text-gray-800">
-                  Available Classes
-                </h2>
-                <span className="text-gray-600">
-                  {filteredClasses.length} classes found
-                </span>
-              </div>
-              
-              {filteredClasses.length > 0 ? (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {filteredClasses.map((classItem, index) => (
-                    <ClassCard key={classItem.id} classItem={classItem} index={index} />
-                  ))}
-                </div>
-              ) : (
-                <div className="bg-gray-50 rounded-xl p-8 text-center">
-                  <h3 className="text-xl font-semibold text-gray-800 mb-2">No Classes Found</h3>
-                  <p className="text-gray-600 mb-4">
-                    Try adjusting your filters to see more results, or check back later for new classes.
-                  </p>
-                  <button 
-                    onClick={() => window.location.reload()}
-                    className="btn-secondary"
-                  >
-                    Reset Filters
-                  </button>
-                </div>
-              )}
+    <div className="min-h-screen pt-24 pb-16">
+      <div className="container-custom">
+        {/* Header */}
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="text-center mb-12"
+        >
+          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+            Our <span className="text-purple-600">Classes</span>
+          </h1>
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+            Discover our range of structured play sessions designed to support your child's 
+            development in a fun, inclusive environment.
+          </p>
+        </motion.div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+          {/* Sidebar with filters */}
+          <div className="lg:col-span-1">
+            <div className="sticky top-28">
+              <ClassFilter />
             </div>
           </div>
+
+          {/* Main content */}
+          <div className="lg:col-span-3">
+            {filteredClasses.length === 0 ? (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                className="text-center py-12"
+              >
+                <Search className="h-16 w-16 text-gray-400 mx-auto mb-4" />
+                <h3 className="text-xl font-semibold text-gray-700 mb-2">
+                  No classes found
+                </h3>
+                <p className="text-gray-500">
+                  Try adjusting your filters to see more classes.
+                </p>
+              </motion.div>
+            ) : (
+              <>
+                <div className="flex items-center justify-between mb-6">
+                  <h2 className="text-2xl font-semibold text-gray-800">
+                    Available Classes ({filteredClasses.length})
+                  </h2>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+                  {filteredClasses.map((classItem, index) => (
+                    <ClassCard 
+                      key={classItem.id} 
+                      classItem={classItem} 
+                      index={index}
+                    />
+                  ))}
+                </div>
+              </>
+            )}
+          </div>
         </div>
-      </section>
-    </>
+      </div>
+    </div>
   );
 };
 

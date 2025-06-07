@@ -1,165 +1,163 @@
-import React, { useEffect, useState } from 'react';
-import { Mail, Phone, MapPin, Instagram } from 'lucide-react';
+import React from 'react';
 import { motion } from 'framer-motion';
+import { MapPin, Phone, Mail, Clock, MessageCircle } from 'lucide-react';
 import ContactForm from '../components/ContactForm';
 
 const ContactPage: React.FC = () => {
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
-  
   return (
-    <>
-      <section className="pt-28 pb-10 bg-gradient-to-b from-secondary-50 to-white">
-        <div className="container-custom">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="text-center max-w-3xl mx-auto"
-          >
-            <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-              Get in <span className="text-secondary-600">Touch</span>
-            </h1>
-            <p className="text-xl text-gray-600">
-              We're here to answer your questions and help you find the perfect play group for your child.
-            </p>
-          </motion.div>
-        </div>
-      </section>
-      
-      <section className="py-12">
-        <div className="container-custom">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+    <div className="min-h-screen pt-24 pb-16">
+      <div className="container-custom">
+        {/* Header */}
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="text-center mb-16"
+        >
+          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+            Get in <span className="text-purple-600">Touch</span>
+          </h1>
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+            Have questions about our programs? Want to learn more about how we can support 
+            your child's development? We'd love to hear from you.
+          </p>
+        </motion.div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
+          {/* Contact Information */}
+          <div className="lg:col-span-1 space-y-8">
             <motion.div
               initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              className="bg-white rounded-xl shadow-md p-6"
             >
-              <h2 className="text-2xl font-bold text-gray-900 mb-6">Contact Information</h2>
+              <h3 className="text-xl font-semibold mb-6 flex items-center">
+                <MessageCircle className="h-6 w-6 mr-2 text-purple-500" />
+                Contact Information
+              </h3>
               
-              <div className="space-y-8 mb-8">
-                <div className="flex">
-                  <div className="bg-secondary-100 rounded-full p-3 mr-4">
-                    <Mail className="h-6 w-6 text-secondary-600" />
-                  </div>
+              <div className="space-y-4">
+                <div className="flex items-start">
+                  <Mail className="h-5 w-5 text-purple-500 mt-1 mr-3 flex-shrink-0" />
                   <div>
-                    <h3 className="text-lg font-semibold mb-1">Email</h3>
-                    <p className="text-gray-700">info@learnbysensory.com</p>
-                    <p className="text-sm text-gray-500 mt-1">
-                      We aim to respond to all inquiries within 24 hours.
+                    <p className="font-medium text-gray-800">Email</p>
+                    <a 
+                      href="mailto:info@learnbysensory.com" 
+                      className="text-purple-600 hover:text-purple-700 transition-colors"
+                    >
+                      info@learnbysensory.com
+                    </a>
+                  </div>
+                </div>
+                
+                <div className="flex items-start">
+                  <Phone className="h-5 w-5 text-purple-500 mt-1 mr-3 flex-shrink-0" />
+                  <div>
+                    <p className="font-medium text-gray-800">Phone</p>
+                    <a 
+                      href="tel:+15035551234" 
+                      className="text-purple-600 hover:text-purple-700 transition-colors"
+                    >
+                      (503) 555-1234
+                    </a>
+                  </div>
+                </div>
+                
+                <div className="flex items-start">
+                  <MapPin className="h-5 w-5 text-purple-500 mt-1 mr-3 flex-shrink-0" />
+                  <div>
+                    <p className="font-medium text-gray-800">Main Location</p>
+                    <p className="text-gray-600">
+                      12334 SilverSpring Place<br />
+                      Portland, OR 97201
                     </p>
                   </div>
                 </div>
                 
-                <div className="flex">
-                  <div className="bg-primary-100 rounded-full p-3 mr-4">
-                    <Phone className="h-6 w-6 text-primary-600" />
-                  </div>
+                <div className="flex items-start">
+                  <Clock className="h-5 w-5 text-purple-500 mt-1 mr-3 flex-shrink-0" />
                   <div>
-                    <h3 className="text-lg font-semibold mb-1">Phone</h3>
-                    <p className="text-gray-700">(555) 123-4567</p>
-                    <p className="text-sm text-gray-500 mt-1">
-                      Available Monday-Friday, 9am-5pm PT
-                    </p>
-                  </div>
-                </div>
-                
-                <div className="flex">
-                  <div className="bg-accent-100 rounded-full p-3 mr-4">
-                    <Instagram className="h-6 w-6 text-accent-600" />
-                  </div>
-                  <div>
-                    <h3 className="text-lg font-semibold mb-1">Social Media</h3>
-                    <p className="text-gray-700">Instagram: @jyssekasensoryme</p>
-                    <p className="text-sm text-gray-500 mt-1">
-                      Follow us for updates, activity ideas, and more.
-                    </p>
-                  </div>
-                </div>
-              </div>
-              
-              <div>
-                <h2 className="text-2xl font-bold text-gray-900 mb-6">Our Team</h2>
-                <div className="bg-white rounded-xl shadow-md p-6">
-                  <div className="flex items-center mb-4">
-                    <div className="mr-4 rounded-full overflow-hidden w-16 h-16 bg-secondary-100 flex items-center justify-center">
-                      <span className="text-2xl font-bold text-secondary-600">JC</span>
-                    </div>
-                    <div>
-                      <h3 className="font-bold text-lg">Jysseka Campbell-George</h3>
-                      <p className="text-gray-600">Founder, COTA-L</p>
+                    <p className="font-medium text-gray-800">Office Hours</p>
+                    <div className="text-gray-600 text-sm">
+                      <p>Monday - Friday: 8:00 AM - 6:00 PM</p>
+                      <p>Saturday: 9:00 AM - 4:00 PM</p>
+                      <p>Sunday: Closed</p>
                     </div>
                   </div>
-                  <p className="text-gray-700">
-                    Jysseka is a Certified Occupational Therapy Assistant (COTA-L) with extensive 
-                    experience supporting children with diverse needs. She founded Learn by Sensory to 
-                    create structured play opportunities that foster development in a fun, supportive 
-                    environment.
-                  </p>
                 </div>
               </div>
             </motion.div>
-            
+
+            {/* FAQ Section */}
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.2 }}
+              className="bg-purple-50 rounded-xl p-6"
+            >
+              <h3 className="text-xl font-semibold mb-4 text-purple-800">
+                Quick Answers
+              </h3>
+              <div className="space-y-3 text-sm">
+                <div>
+                  <p className="font-medium text-purple-800">What ages do you serve?</p>
+                  <p className="text-purple-700">We serve children ages 2-8 years old.</p>
+                </div>
+                <div>
+                  <p className="font-medium text-purple-800">Do you accept insurance?</p>
+                  <p className="text-purple-700">We're working on insurance partnerships. Please contact us for current options.</p>
+                </div>
+                <div>
+                  <p className="font-medium text-purple-800">How small are the groups?</p>
+                  <p className="text-purple-700">Our groups are limited to 6-10 children depending on the activity.</p>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+
+          {/* Contact Form */}
+          <div className="lg:col-span-2">
             <motion.div
               initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.5, delay: 0.4 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
             >
-              <h2 className="text-2xl font-bold text-gray-900 mb-6">Send Us a Message</h2>
               <ContactForm />
             </motion.div>
           </div>
         </div>
-      </section>
-      
-      <section className="py-12 bg-secondary-50">
-        <div className="container-custom">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">Frequently Asked Questions</h2>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              Find answers to commonly asked questions about our structured play groups.
-            </p>
-          </div>
-          
-          <div className="max-w-3xl mx-auto space-y-6">
-            <div className="bg-white rounded-xl shadow-md p-6">
-              <h3 className="font-semibold text-lg mb-2">What age groups do you serve?</h3>
-              <p className="text-gray-600">
-                Our structured play groups are designed for children ages 2-8, with specific 
-                groups tailored to narrower age ranges to ensure developmentally appropriate activities.
-              </p>
-            </div>
-            
-            <div className="bg-white rounded-xl shadow-md p-6">
-              <h3 className="font-semibold text-lg mb-2">How large are your play groups?</h3>
-              <p className="text-gray-600">
-                We keep our groups small—typically 6-8 children per session—to ensure each child 
-                receives personalized attention and has plenty of opportunities for interaction.
-              </p>
-            </div>
-            
-            <div className="bg-white rounded-xl shadow-md p-6">
-              <h3 className="font-semibold text-lg mb-2">How do you accommodate special needs?</h3>
-              <p className="text-gray-600">
-                Our facilitators are trained to work with children with diverse needs, including 
-                those with ASD, sensory processing differences, and other developmental considerations. 
-                We encourage parents to share specific needs during registration so we can provide 
-                appropriate support.
-              </p>
-            </div>
-            
-            <div className="bg-white rounded-xl shadow-md p-6">
-              <h3 className="font-semibold text-lg mb-2">What is your cancellation policy?</h3>
-              <p className="text-gray-600">
-                We understand that plans change. Cancellations made at least 48 hours before the 
-                scheduled session are eligible for a full refund or credit toward a future session. 
-                For cancellations within 48 hours, we offer a 50% credit that can be applied to a future booking.
-              </p>
+
+        {/* Map Section */}
+        <motion.section
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="mt-16"
+        >
+          <h2 className="text-3xl font-bold text-gray-900 mb-8 text-center">
+            Visit Our Locations
+          </h2>
+          <div className="bg-white rounded-xl shadow-md overflow-hidden">
+            <div className="aspect-w-16 aspect-h-9 bg-gray-200 flex items-center justify-center">
+              <div className="text-center p-8">
+                <MapPin className="h-16 w-16 text-gray-400 mx-auto mb-4" />
+                <h3 className="text-xl font-semibold text-gray-700 mb-2">Interactive Map</h3>
+                <p className="text-gray-500 mb-4">
+                  Find our locations throughout Portland and plan your visit.
+                </p>
+                <a 
+                  href="/locations" 
+                  className="btn-secondary"
+                >
+                  View All Locations
+                </a>
+              </div>
             </div>
           </div>
-        </div>
-      </section>
-    </>
+        </motion.section>
+      </div>
+    </div>
   );
 };
 

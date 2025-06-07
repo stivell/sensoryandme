@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Menu, X, Play, UserCircle } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { supabase } from '../lib/supabase';
+import { supabase, isDemoMode } from '../lib/supabase';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -28,6 +28,11 @@ const Header = () => {
   }, [location]);
 
   useEffect(() => {
+    if (isDemoMode) {
+      // In demo mode, don't try to authenticate
+      return;
+    }
+
     // Get initial session
     supabase.auth.getSession().then(({ data: { session } }) => {
       setUser(session?.user ?? null);
@@ -52,6 +57,8 @@ const Header = () => {
   }, []);
 
   const checkAdminStatus = async (userId: string) => {
+    if (isDemoMode) return;
+    
     const { data } = await supabase
       .from('users')
       .select('role')
@@ -62,6 +69,13 @@ const Header = () => {
   };
 
   const handleSignOut = async () => {
+    if (isDemoMode) {
+      setUser(null);
+      setIsAdmin(false);
+      navigate('/');
+      return;
+    }
+    
     await supabase.auth.signOut();
     navigate('/');
   };
@@ -154,6 +168,11 @@ const Header = () => {
             </div>
           ) : (
             <div className="flex items-center space-x-4">
+              {isDemoMode && (
+                <span className="text-sm bg-yellow-100 text-yellow-800 px-2 py-1 rounded">
+                  Demo Mode
+                </span>
+              )}
               <Link to="/login" className="font-medium text-gray-800 hover:text-purple-600">
                 Sign In
               </Link>
@@ -230,6 +249,11 @@ const Header = () => {
                 </>
               ) : (
                 <>
+                  {isDemoMode && (
+                    <span className="text-sm bg-yellow-100 text-yellow-800 px-2 py-1 rounded self-start">
+                      Demo Mode
+                    </span>
+                  )}
                   <Link to="/login" className="font-medium py-2 text-gray-800 hover:text-purple-600">
                     Sign In
                   </Link>

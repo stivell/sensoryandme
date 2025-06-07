@@ -1,6 +1,7 @@
 import React, { createContext, useState, useContext, ReactNode, useEffect } from 'react';
 import { Class, Location } from '../types';
-import { supabase } from '../lib/supabase';
+import { supabase, isDemoMode } from '../lib/supabase';
+import { mockClasses, mockLocations } from '../data/mockData';
 
 interface AppContextProps {
   classes: Class[];
@@ -32,6 +33,15 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
   useEffect(() => {
     const fetchData = async () => {
       try {
+        if (isDemoMode) {
+          // Use mock data in demo mode
+          console.log('Running in demo mode with mock data');
+          setLocations(mockLocations);
+          setClasses(mockClasses);
+          setFilteredClasses(mockClasses);
+          return;
+        }
+
         // Fetch locations
         const { data: locationsData, error: locationsError } = await supabase
           .from('locations')
@@ -39,7 +49,10 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
 
         if (locationsError) {
           console.error('Error fetching locations:', locationsError);
-          return;
+          // Fallback to mock data
+          setLocations(mockLocations);
+        } else {
+          setLocations(locationsData || []);
         }
 
         // Fetch classes
@@ -49,14 +62,19 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
 
         if (classesError) {
           console.error('Error fetching classes:', classesError);
-          return;
+          // Fallback to mock data
+          setClasses(mockClasses);
+          setFilteredClasses(mockClasses);
+        } else {
+          setClasses(classesData || []);
+          setFilteredClasses(classesData || []);
         }
-
-        setLocations(locationsData);
-        setClasses(classesData);
-        setFilteredClasses(classesData);
       } catch (error) {
         console.error('Error fetching data:', error);
+        // Fallback to mock data
+        setLocations(mockLocations);
+        setClasses(mockClasses);
+        setFilteredClasses(mockClasses);
       }
     };
 

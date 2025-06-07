@@ -1,0 +1,38 @@
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://learnbysensory.com/sitemap.xml
+
+# Crawl-delay for polite crawling
+Crawl-delay: 1
+
+# Allow all pages for search engines
+Allow: /classes
+Allow: /locations
+Allow: /about
+Allow: /contact
+Allow: /login
+Allow: /signup
+
+# Disallow admin areas and private pages
+Disallow: /admin
+Disallow: /my-bookings
+Disallow: /booking-confirmation
+
+# Disallow API endpoints and functions
+Disallow: /api/
+Disallow: /functions/
+
+# Allow common files
+Allow: /robots.txt
+Allow: /sitemap.xml
+Allow: /favicon.ico
+Allow: /*.css
+Allow: /*.js
+Allow: /*.png
+Allow: /*.jpg
+Allow: /*.jpeg
+Allow: /*.gif
+Allow: /*.svg
+Allow: /*.webp
