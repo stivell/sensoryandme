@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
-import { Calendar, Clock, MapPin, User, AlertCircle } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { Calendar, Clock, MapPin, User, AlertCircle, X, CheckCircle } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 interface Booking {
   id: string;
@@ -22,11 +22,110 @@ interface Booking {
   } | null;
 }
 
+interface CancelModalProps {
+  booking: Booking;
+  isOpen: boolean;
+  onClose: () => void;
+  onConfirm: (bookingId: string) => void;
+  isLoading: boolean;
+}
+
+const CancelModal: React.FC<CancelModalProps> = ({ booking, isOpen, onClose, onConfirm, isLoading }) => {
+  if (!isOpen || !booking.class) return null;
+
+  const classDate = new Date(booking.class.date);
+  const now = new Date();
+  const hoursUntilClass = (classDate.getTime() - now.getTime()) / (1000 * 60 * 60);
+  const canGetRefund = hoursUntilClass >= 24;
+
+  return (
+    <AnimatePresence>
+      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0, scale: 0.9 }}
+          className="bg-white rounded-xl shadow-xl max-w-md w-full p-6"
+        >
+          <div className="flex items-center justify-between mb-4">
+            <h3 className="text-xl font-semibold text-gray-900">Cancel Booking</h3>
+            <button
+              onClick={onClose}
+              className="text-gray-400 hover:text-gray-600 transition-colors"
+            >
+              <X className="h-5 w-5" />
+            </button>
+          </div>
+
+          <div className="mb-6">
+            <div className="bg-gray-50 rounded-lg p-4 mb-4">
+              <h4 className="font-medium text-gray-800 mb-2">{booking.class.title}</h4>
+              <p className="text-sm text-gray-600">
+                {new Date(booking.class.date).toLocaleDateString('en-US', {
+                  weekday: 'long',
+                  year: 'numeric',
+                  month: 'long',
+                  day: 'numeric'
+                })} at {booking.class.time}
+              </p>
+              <p className="text-sm text-gray-600">Child: {booking.child_name}</p>
+            </div>
+
+            <div className={`p-4 rounded-lg ${canGetRefund ? 'bg-success-50 border border-success-200' : 'bg-warning-50 border border-warning-200'}`}>
+              <div className="flex items-start">
+                {canGetRefund ? (
+                  <CheckCircle className="h-5 w-5 text-success-600 mt-0.5 mr-2 flex-shrink-0" />
+                ) : (
+                  <AlertCircle className="h-5 w-5 text-warning-600 mt-0.5 mr-2 flex-shrink-0" />
+                )}
+                <div>
+                  <h4 className={`font-medium ${canGetRefund ? 'text-success-800' : 'text-warning-800'} mb-1`}>
+                    {canGetRefund ? 'Full Refund Available' : 'No Refund Available'}
+                  </h4>
+                  <p className={`text-sm ${canGetRefund ? 'text-success-700' : 'text-warning-700'}`}>
+                    {canGetRefund 
+                      ? `You're canceling more than 24 hours in advance. You'll receive a full refund of $${booking.class.price}.`
+                      : `You're canceling less than 24 hours before the class. No refund will be issued according to our cancellation policy.`
+                    }
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="flex space-x-3">
+            <button
+              onClick={onClose}
+              disabled={isLoading}
+              className="flex-1 btn-outline"
+            >
+              Keep Booking
+            </button>
+            <button
+              onClick={() => onConfirm(booking.id)}
+              disabled={isLoading}
+              className="flex-1 bg-error-600 text-white hover:bg-error-700 focus:ring-error-500 btn"
+            >
+              {isLoading ? 'Canceling...' : 'Cancel Booking'}
+            </button>
+          </div>
+        </motion.div>
+      </div>
+    </AnimatePresence>
+  );
+};
+
 const MyBookingsPage = () => {
   const navigate = useNavigate();
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [cancelModal, setCancelModal] = useState<{ isOpen: boolean; booking: Booking | null }>({
+    isOpen: false,
+    booking: null
+  });
+  const [isCanceling, setIsCanceling] = useState(false);
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -70,6 +169,94 @@ const MyBookingsPage = () => {
     fetchBookings();
   }, [navigate]);
 
+  const handleCancelBooking = async (bookingId: string) => {
+    setIsCanceling(true);
+    setError(null);
+
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      
+      if (!session) {
+        throw new Error('Please sign in to cancel bookings');
+      }
+
+      // Get the booking details
+      const booking = bookings.find(b => b.id === bookingId);
+      if (!booking || !booking.class) {
+        throw new Error('Booking not found');
+      }
+
+      // Calculate if refund is eligible (24+ hours before class)
+      const classDate = new Date(booking.class.date);
+      const now = new Date();
+      const hoursUntilClass = (classDate.getTime() - now.getTime()) / (1000 * 60 * 60);
+      const isRefundEligible = hoursUntilClass >= 24;
+
+      // Delete the booking
+      const { error: deleteError } = await supabase
+        .from('bookings')
+        .delete()
+        .eq('id', bookingId)
+        .eq('user_id', session.user.id);
+
+      if (deleteError) {
+        throw deleteError;
+      }
+
+      // Decrement class enrollment
+      const { error: enrollmentError } = await supabase.rpc('decrement_enrollment', {
+        p_class_id: booking.class.id
+      });
+
+      if (enrollmentError) {
+        console.error('Error updating enrollment:', enrollmentError);
+        // Don't throw here as the booking was already deleted
+      }
+
+      // Update local state
+      setBookings(prev => prev.filter(b => b.id !== bookingId));
+      
+      // Show success message
+      const refundMessage = isRefundEligible 
+        ? ` A refund of $${booking.class.price} will be processed within 3-5 business days.`
+        : ' No refund will be issued due to our 24-hour cancellation policy.';
+      
+      setSuccessMessage(`Booking canceled successfully.${refundMessage}`);
+      
+      // Close modal
+      setCancelModal({ isOpen: false, booking: null });
+
+      // Clear success message after 5 seconds
+      setTimeout(() => {
+        setSuccessMessage(null);
+      }, 5000);
+
+    } catch (err) {
+      console.error('Error canceling booking:', err);
+      setError(err instanceof Error ? err.message : 'Failed to cancel booking');
+    } finally {
+      setIsCanceling(false);
+    }
+  };
+
+  const openCancelModal = (booking: Booking) => {
+    setCancelModal({ isOpen: true, booking });
+  };
+
+  const closeCancelModal = () => {
+    setCancelModal({ isOpen: false, booking: null });
+  };
+
+  const canCancelBooking = (booking: Booking) => {
+    if (!booking.class) return false;
+    
+    const classDate = new Date(booking.class.date);
+    const now = new Date();
+    
+    // Can cancel if class hasn't started yet
+    return classDate > now;
+  };
+
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -99,6 +286,17 @@ const MyBookingsPage = () => {
             <AlertCircle className="h-5 w-5 mr-2" />
             {error}
           </div>
+        )}
+
+        {successMessage && (
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="mb-6 bg-success-50 border border-success-200 text-success-700 px-4 py-3 rounded-lg flex items-center"
+          >
+            <CheckCircle className="h-5 w-5 mr-2" />
+            {successMessage}
+          </motion.div>
         )}
 
         {bookings.length === 0 ? (
@@ -143,13 +341,20 @@ const MyBookingsPage = () => {
                             <span>Booked on {new Date(booking.created_at).toLocaleDateString()}</span>
                           </div>
                         </div>
-                        <span className={`px-3 py-1 text-xs font-medium rounded-full ${
-                          booking.payment_status === 'completed'
-                            ? 'bg-success-100 text-success-800'
-                            : 'bg-warning-100 text-warning-800'
-                        }`}>
-                          {booking.payment_status === 'completed' ? 'Confirmed' : 'Pending'}
-                        </span>
+                        <div className="flex items-center space-x-2">
+                          <span className={`px-3 py-1 text-xs font-medium rounded-full ${
+                            booking.payment_status === 'completed'
+                              ? 'bg-success-100 text-success-800'
+                              : 'bg-warning-100 text-warning-800'
+                          }`}>
+                            {booking.payment_status === 'completed' ? 'Confirmed' : 'Pending'}
+                          </span>
+                          {booking.class && new Date(booking.class.date) < new Date() && (
+                            <span className="px-3 py-1 text-xs font-medium rounded-full bg-gray-100 text-gray-800">
+                              Completed
+                            </span>
+                          )}
+                        </div>
                       </div>
 
                       {booking.class && (
@@ -227,6 +432,16 @@ const MyBookingsPage = () => {
                           View Class
                         </button>
                       )}
+                      
+                      {booking.class && canCancelBooking(booking) && (
+                        <button
+                          onClick={() => openCancelModal(booking)}
+                          className="bg-error-600 text-white hover:bg-error-700 focus:ring-error-500 btn text-sm px-4 py-2"
+                        >
+                          Cancel Booking
+                        </button>
+                      )}
+                      
                       <button
                         onClick={() => navigate('/contact')}
                         className="btn-outline text-sm px-4 py-2"
@@ -239,6 +454,17 @@ const MyBookingsPage = () => {
               </motion.div>
             ))}
           </div>
+        )}
+
+        {/* Cancel Modal */}
+        {cancelModal.booking && (
+          <CancelModal
+            booking={cancelModal.booking}
+            isOpen={cancelModal.isOpen}
+            onClose={closeCancelModal}
+            onConfirm={handleCancelBooking}
+            isLoading={isCanceling}
+          />
         )}
       </div>
     </div>

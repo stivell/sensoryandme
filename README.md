@@ -1,2 +1,23 @@
 # sensoryandme
-At Sensory &amp; ME, we believe in the transformative power of purposeful play. This document outlines the requirements for our AI-Powered Structured Play Groups platform, designed to support children's development through intentionally facilitated play sessions.
+
+This project was created and pushed to GitHub using [Bolt to GitHub](https://github.com/mamertofabian/bolt-to-github) Chrome Extension.
+
+## Description
+
+[Add your project description here]
+
+## Installation
+
+[Add installation instructions here]
+
+## Usage
+
+[Add usage instructions here]
+
+## Contributing
+
+[Add contribution guidelines here]
+
+## License
+
+[Add license information here]
