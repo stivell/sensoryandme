@@ -79,7 +79,8 @@ const SignupPage: React.FC = () => {
     setError(null);
 
     try {
-      // Sign up the user
+      console.log('Starting signup process...');
+
       const { data, error: signUpError } = await supabase.auth.signUp({
         email: formData.email,
         password: formData.password,
@@ -91,34 +92,39 @@ const SignupPage: React.FC = () => {
         }
       });
 
+      console.log('SignUp response:', { data, error: signUpError });
+
       if (signUpError) {
         throw signUpError;
       }
 
-      if (data.user) {
-        // Create user profile
-        const { error: profileError } = await supabase
-          .from('users')
-          .insert({
-            id: data.user.id,
-            email: formData.email,
-            name: formData.name,
-            phone: formData.phone || null,
-            role: formData.email.includes('@sensorymeplay.org') ? 'admin' : 'parent'
-          });
-
-        if (profileError) {
-          console.error('Error creating user profile:', profileError);
-          // Don't throw here as the auth user was created successfully
-        }
-
-        setSuccess(true);
-        
-        // Redirect after a short delay
-        setTimeout(() => {
-          navigate('/');
-        }, 2000);
+      if (!data.user) {
+        throw new Error('Failed to create user account');
       }
+
+      console.log('User created, now creating profile...');
+
+      const { error: profileError } = await supabase
+        .from('users')
+        .insert({
+          id: data.user.id,
+          email: formData.email,
+          name: formData.name,
+          phone: formData.phone || null,
+          role: formData.email.includes('@learnbysensory.com') ? 'admin' : 'parent'
+        });
+
+      if (profileError) {
+        console.error('Profile creation error:', profileError);
+        throw new Error(`Failed to create user profile: ${profileError.message}`);
+      }
+
+      console.log('Profile created successfully');
+      setSuccess(true);
+
+      setTimeout(() => {
+        navigate('/');
+      }, 2000);
     } catch (err) {
       console.error('Signup error:', err);
       if (err instanceof Error) {
