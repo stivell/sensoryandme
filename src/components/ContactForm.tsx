@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { AlertCircle, CheckCircle, Mail } from 'lucide-react';
+import { supabase } from '../lib/supabase';
 
 const ContactForm: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -23,24 +24,20 @@ const ContactForm: React.FC = () => {
     e.preventDefault();
     setIsSubmitting(true);
     setError(null);
-    
+
     try {
-      const response = await fetch(
-        `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/send-contact-email`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`
-          },
-          body: JSON.stringify(formData),
-        }
-      );
+      const { error: insertError } = await supabase
+        .from('contact_messages')
+        .insert({
+          name: formData.name,
+          email: formData.email,
+          subject: formData.subject,
+          message: formData.message,
+          status: 'new'
+        });
 
-      const responseData = await response.json();
-
-      if (!response.ok) {
-        throw new Error(responseData.error || `HTTP ${response.status}: ${response.statusText}`);
+      if (insertError) {
+        throw insertError;
       }
 
       setIsSubmitted(true);
@@ -50,25 +47,13 @@ const ContactForm: React.FC = () => {
         subject: '',
         message: ''
       });
-      
+
       setTimeout(() => {
         setIsSubmitted(false);
       }, 5000);
     } catch (err) {
       console.error('Error sending message:', err);
-      let errorMessage = 'Failed to send message';
-      
-      if (err instanceof Error) {
-        if (err.message.includes('Email service is not configured')) {
-          errorMessage = 'Email service is not configured properly. Please contact support.';
-        } else if (err.message.includes('Missing required fields')) {
-          errorMessage = 'Please fill out all required fields.';
-        } else {
-          errorMessage = err.message;
-        }
-      }
-      
-      setError(errorMessage);
+      setError(err instanceof Error ? err.message : 'Failed to send message');
     } finally {
       setIsSubmitting(false);
     }

@@ -110,32 +110,8 @@ const BookingForm: React.FC<BookingFormProps> = ({
         throw updateError;
       }
 
-      // Send confirmation emails
-      const { error: emailError } = await fetch(
-        `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/send-booking-email`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${session.access_token}`,
-          },
-          body: JSON.stringify({
-            to: formData.email,
-            templateData: {
-              parentName: formData.parentName,
-              childName: formData.childName,
-              className,
-              classDate,
-              classTime,
-              location: classData.location.name,
-            },
-          }),
-        }
-      ).then(res => res.json());
-
-      if (emailError) {
-        console.error('Error sending confirmation email:', emailError);
-      }
+      // Email sending disabled - configure SendGrid to enable
+      console.log('Booking created successfully - email notifications disabled');
       
       // Store email for context
       setUserEmail(formData.email);
