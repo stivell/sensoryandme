@@ -1,7 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { supabase } from '../lib/supabase';
-import { Calendar, ShieldAlert, BookOpen, Users } from 'lucide-react';
+import React, { useState } from 'react';
+import { Calendar, ShieldAlert, BookOpen } from 'lucide-react';
 import ClassManagementTable from '../components/admin/ClassManagementTable';
 import ClassFormModal from '../components/admin/ClassFormModal';
 import BookingsManagement from '../components/admin/BookingsManagement';
@@ -10,53 +8,10 @@ import { Class } from '../types';
 type TabType = 'classes' | 'bookings';
 
 const AdminDashboardPage = () => {
-  const navigate = useNavigate();
-  const [isLoading, setIsLoading] = useState(true);
-  const [isAdmin, setIsAdmin] = useState(false);
   const [activeTab, setActiveTab] = useState<TabType>('classes');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingClass, setEditingClass] = useState<Class | null>(null);
   const [refreshTrigger, setRefreshTrigger] = useState(0);
-
-  useEffect(() => {
-    const checkAdminAccess = async () => {
-      try {
-        const { data: { session } } = await supabase.auth.getSession();
-
-        if (!session) {
-          navigate('/login');
-          return false;
-        }
-
-        const { data: userData, error: userError } = await supabase
-          .from('users')
-          .select('role')
-          .eq('id', session.user.id)
-          .maybeSingle();
-
-        if (userError || userData?.role !== 'admin') {
-          return false;
-        }
-
-        return true;
-      } catch (err) {
-        return false;
-      }
-    };
-
-    const init = async () => {
-      try {
-        const isAdminUser = await checkAdminAccess();
-        setIsAdmin(isAdminUser);
-      } catch (err) {
-        console.error('Error checking admin access:', err);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    init();
-  }, [navigate]);
 
   const handleEdit = (classData: Class) => {
     setEditingClass(classData);
@@ -76,36 +31,6 @@ const AdminDashboardPage = () => {
   const handleSave = () => {
     setRefreshTrigger(prev => prev + 1);
   };
-
-  if (isLoading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-secondary-600"></div>
-      </div>
-    );
-  }
-
-  if (!isAdmin) {
-    return (
-      <div className="min-h-screen pt-24 pb-12">
-        <div className="container-custom">
-          <div className="bg-error-50 border border-error-200 rounded-lg p-8 text-center">
-            <ShieldAlert className="h-16 w-16 text-error-500 mx-auto mb-4" />
-            <h2 className="text-2xl font-bold text-error-800 mb-2">Access Denied</h2>
-            <p className="text-error-600 mb-6">
-              You don't have permission to access the admin dashboard.
-            </p>
-            <button
-              onClick={() => navigate('/')}
-              className="btn-primary"
-            >
-              Return to Home
-            </button>
-          </div>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className="min-h-screen pt-24 pb-12">
