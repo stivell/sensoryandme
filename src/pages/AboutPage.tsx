@@ -213,24 +213,23 @@ const AboutPage: React.FC = () => {
               <div className="md:w-2/3 p-8">
                 <h3 className="text-2xl font-bold text-gray-900 mb-4">Jysseka Campbell-George</h3>
                 <p className="text-gray-600 mb-4 leading-relaxed">
-                  With over a decade of experience in child development and special education, 
-                  Jysseka founded Learn by Sensory to bridge the gap between traditional therapy 
-                  and everyday play experiences.
+                  I am a mother of three and an Occupational Therapist with over ten years of experience supporting children and families across a wide range of developmental needs. Throughout my career, I have worked with individuals of all ages and abilities; however, my professional focus has consistently centered on children—and on creating supportive, skill-building environments that foster confidence, connection, and participation.
                 </p>
                 <p className="text-gray-600 mb-4 leading-relaxed">
-                  Her vision combines cutting-edge AI technology with time-tested developmental 
-                  approaches to create programs that truly meet children where they are and help 
-                  them grow at their own pace.
+                  My work became deeply personal through my own parenting journey. Like many families, I experienced moments of uncertainty and overwhelm while navigating how best to support my child's social and emotional development. During that time, I searched for guidance, meaningful resources, and opportunities that felt both supportive and practical.
+                </p>
+                <p className="text-gray-600 mb-4 leading-relaxed">
+                  Those experiences shaped my passion for developing intentional social groups where children can build confidence, communication, and peer relationships in a structured, encouraging setting. By combining my professional background with my personal insight as a parent, I created this program to ensure families feel supported, informed, and empowered. My goal is to provide a compassionate space where children can grow socially at their own pace while parents receive guidance rooted in understanding and experience.
                 </p>
                 <div className="flex flex-wrap gap-2">
+                  <span className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm">
+                    Occupational Therapist
+                  </span>
                   <span className="bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-sm">
-                    Child Development Specialist
+                    Mother of Three
                   </span>
                   <span className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm">
-                    Special Education Expert
-                  </span>
-                  <span className="bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-sm">
-                    AI Innovation Leader
+                    Child Development Expert
                   </span>
                 </div>
               </div>
