@@ -56,23 +56,16 @@ const BookingForm: React.FC<BookingFormProps> = ({
   
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!formData.childName || !formData.childAge) {
       setError('Please fill out all required fields');
       return;
     }
-    
+
     setIsSubmitting(true);
     setError(null);
-    
-    try {
-      // Get user session
-      const { data: { session }, error: authError } = await supabase.auth.getSession();
-      
-      if (authError || !session) {
-        throw new Error('Please sign in to book a class');
-      }
 
+    try {
       // Get location details
       const { data: classData } = await supabase
         .from('classes')
@@ -83,48 +76,48 @@ const BookingForm: React.FC<BookingFormProps> = ({
       if (!classData) {
         throw new Error('Class not found');
       }
-      
-      // Create booking
+
+      // Create booking without user authentication
       const { error: bookingError } = await supabase
         .from('bookings')
         .insert({
           class_id: classId,
-          user_id: session.user.id,
+          user_id: null,
           parent_name: formData.parentName,
           child_name: formData.childName,
           child_age: parseInt(formData.childAge),
           special_needs: formData.specialNeeds || null,
           payment_status: 'pending'
         });
-      
+
       if (bookingError) {
         throw bookingError;
       }
-      
+
       // Update class enrollment
       const { error: updateError } = await supabase.rpc('increment_enrollment', {
         p_class_id: classId
       });
-      
+
       if (updateError) {
         throw updateError;
       }
 
       // Email sending disabled - configure SendGrid to enable
       console.log('Booking created successfully - email notifications disabled');
-      
+
       // Store email for context
       setUserEmail(formData.email);
-      
+
       // Navigate to confirmation
-      navigate('/booking-confirmation', { 
-        state: { 
+      navigate('/booking-confirmation', {
+        state: {
           className,
           classDate,
           classTime,
           price,
           email: formData.email
-        } 
+        }
       });
     } catch (err) {
       console.error('Booking error:', err);

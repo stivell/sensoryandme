@@ -1,16 +1,12 @@
 import { useState, useEffect } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { Menu, X, Play, UserCircle } from 'lucide-react';
+import { Link, useLocation } from 'react-router-dom';
+import { Menu, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { supabase, isDemoMode } from '../lib/supabase';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
-  const [user, setUser] = useState(null);
-  const [isAdmin, setIsAdmin] = useState(false);
   const location = useLocation();
-  const navigate = useNavigate();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -26,59 +22,6 @@ const Header = () => {
   useEffect(() => {
     setIsMenuOpen(false);
   }, [location]);
-
-  useEffect(() => {
-    if (isDemoMode) {
-      // In demo mode, don't try to authenticate
-      return;
-    }
-
-    // Get initial session
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setUser(session?.user ?? null);
-      if (session?.user) {
-        checkAdminStatus(session.user.id);
-      }
-    });
-
-    // Listen for auth changes
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, session) => {
-      setUser(session?.user ?? null);
-      if (session?.user) {
-        checkAdminStatus(session.user.id);
-      } else {
-        setIsAdmin(false);
-      }
-    });
-
-    return () => subscription.unsubscribe();
-  }, []);
-
-  const checkAdminStatus = async (userId: string) => {
-    if (isDemoMode) return;
-    
-    const { data } = await supabase
-      .from('users')
-      .select('role')
-      .eq('id', userId)
-      .single();
-    
-    setIsAdmin(data?.role === 'admin');
-  };
-
-  const handleSignOut = async () => {
-    if (isDemoMode) {
-      setUser(null);
-      setIsAdmin(false);
-      navigate('/');
-      return;
-    }
-    
-    await supabase.auth.signOut();
-    navigate('/');
-  };
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -132,55 +75,17 @@ const Header = () => {
               key={item.name}
               to={item.path}
               className={`font-medium transition-colors duration-300 hover:text-purple-600 ${
-                location.pathname === item.path 
-                  ? 'text-purple-600 font-semibold' 
+                location.pathname === item.path
+                  ? 'text-purple-600 font-semibold'
                   : isScrolled ? 'text-gray-800' : 'text-gray-900'
               }`}
             >
               {item.name}
             </Link>
           ))}
-          {user ? (
-            <div className="flex items-center space-x-4">
-              <Link 
-                to="/my-bookings"
-                className="font-medium text-gray-800 hover:text-purple-600"
-              >
-                My Bookings
-              </Link>
-              {isAdmin && (
-                <Link 
-                  to="/admin"
-                  className="font-medium text-gray-800 hover:text-purple-600"
-                >
-                  Admin Dashboard
-                </Link>
-              )}
-              <button
-                onClick={handleSignOut}
-                className="font-medium text-gray-800 hover:text-purple-600"
-              >
-                Sign Out
-              </button>
-              <Link to="/classes" className="btn-primary">
-                Book a Class
-              </Link>
-            </div>
-          ) : (
-            <div className="flex items-center space-x-4">
-              {isDemoMode && (
-                <span className="text-sm bg-yellow-100 text-yellow-800 px-2 py-1 rounded">
-                  Demo Mode
-                </span>
-              )}
-              <Link to="/login" className="font-medium text-gray-800 hover:text-purple-600">
-                Sign In
-              </Link>
-              <Link to="/signup" className="btn-primary">
-                Sign Up
-              </Link>
-            </div>
-          )}
+          <Link to="/classes" className="btn-primary">
+            Book a Class
+          </Link>
         </nav>
 
         {/* Mobile Navigation Toggle */}
@@ -200,7 +105,7 @@ const Header = () => {
       {/* Mobile Navigation Menu */}
       <AnimatePresence>
         {isMenuOpen && (
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
@@ -213,55 +118,17 @@ const Header = () => {
                   key={item.name}
                   to={item.path}
                   className={`font-medium py-2 transition-colors ${
-                    location.pathname === item.path 
-                      ? 'text-purple-600 font-semibold' 
+                    location.pathname === item.path
+                      ? 'text-purple-600 font-semibold'
                       : 'text-gray-800 hover:text-purple-600'
                   }`}
                 >
                   {item.name}
                 </Link>
               ))}
-              {user ? (
-                <>
-                  <Link 
-                    to="/my-bookings"
-                    className="font-medium py-2 text-gray-800 hover:text-purple-600"
-                  >
-                    My Bookings
-                  </Link>
-                  {isAdmin && (
-                    <Link 
-                      to="/admin"
-                      className="font-medium py-2 text-gray-800 hover:text-purple-600"
-                    >
-                      Admin Dashboard
-                    </Link>
-                  )}
-                  <button
-                    onClick={handleSignOut}
-                    className="font-medium py-2 text-gray-800 hover:text-purple-600 text-left"
-                  >
-                    Sign Out
-                  </button>
-                  <Link to="/classes" className="btn-primary w-full text-center">
-                    Book a Class
-                  </Link>
-                </>
-              ) : (
-                <>
-                  {isDemoMode && (
-                    <span className="text-sm bg-yellow-100 text-yellow-800 px-2 py-1 rounded self-start">
-                      Demo Mode
-                    </span>
-                  )}
-                  <Link to="/login" className="font-medium py-2 text-gray-800 hover:text-purple-600">
-                    Sign In
-                  </Link>
-                  <Link to="/signup" className="btn-primary w-full text-center">
-                    Sign Up
-                  </Link>
-                </>
-              )}
+              <Link to="/classes" className="btn-primary w-full text-center">
+                Book a Class
+              </Link>
             </div>
           </motion.div>
         )}
