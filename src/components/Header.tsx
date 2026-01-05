@@ -1,12 +1,15 @@
 import { useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import { Menu, X } from 'lucide-react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Menu, X, LogIn, UserPlus, LogOut, User } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useAuth } from '../context/AuthContext';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
+  const { user, signOut, isAdmin } = useAuth();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -27,14 +30,22 @@ const Header = () => {
     setIsMenuOpen(!isMenuOpen);
   };
 
+  const handleLogout = async () => {
+    await signOut();
+    navigate('/');
+  };
+
   const navItems = [
     { name: 'Home', path: '/' },
     { name: 'Classes', path: '/classes' },
     { name: 'Locations', path: '/locations' },
     { name: 'About', path: '/about' },
     { name: 'Contact', path: '/contact' },
-    { name: 'Admin', path: '/admin' },
   ];
+
+  if (isAdmin) {
+    navItems.push({ name: 'Admin', path: '/admin' });
+  }
 
   return (
     <header 
@@ -87,6 +98,38 @@ const Header = () => {
           <Link to="/classes" className="btn-primary">
             Book a Class
           </Link>
+          {user ? (
+            <div className="flex items-center space-x-4">
+              <div className="flex items-center space-x-2 text-gray-700">
+                <User className="w-4 h-4" />
+                <span className="text-sm font-medium">{user.email}</span>
+              </div>
+              <button
+                onClick={handleLogout}
+                className="flex items-center space-x-2 px-4 py-2 text-sm font-medium text-red-600 hover:text-red-700 transition-colors"
+              >
+                <LogOut className="w-4 h-4" />
+                <span>Logout</span>
+              </button>
+            </div>
+          ) : (
+            <div className="flex items-center space-x-3">
+              <Link
+                to="/login"
+                className="flex items-center space-x-2 px-4 py-2 text-sm font-medium text-gray-700 hover:text-purple-600 transition-colors"
+              >
+                <LogIn className="w-4 h-4" />
+                <span>Login</span>
+              </Link>
+              <Link
+                to="/signup"
+                className="flex items-center space-x-2 px-4 py-2 text-sm font-medium bg-gradient-to-r from-blue-500 to-green-500 text-white rounded-lg hover:from-blue-600 hover:to-green-600 transition-all"
+              >
+                <UserPlus className="w-4 h-4" />
+                <span>Sign Up</span>
+              </Link>
+            </div>
+          )}
         </nav>
 
         {/* Mobile Navigation Toggle */}
@@ -130,6 +173,38 @@ const Header = () => {
               <Link to="/classes" className="btn-primary w-full text-center">
                 Book a Class
               </Link>
+              {user ? (
+                <>
+                  <div className="flex items-center space-x-2 text-gray-700 py-2 border-t">
+                    <User className="w-4 h-4" />
+                    <span className="text-sm font-medium">{user.email}</span>
+                  </div>
+                  <button
+                    onClick={handleLogout}
+                    className="flex items-center justify-center space-x-2 w-full px-4 py-2 text-sm font-medium text-red-600 hover:text-red-700 transition-colors border border-red-200 rounded-lg"
+                  >
+                    <LogOut className="w-4 h-4" />
+                    <span>Logout</span>
+                  </button>
+                </>
+              ) : (
+                <div className="flex flex-col space-y-2 border-t pt-3">
+                  <Link
+                    to="/login"
+                    className="flex items-center justify-center space-x-2 w-full px-4 py-2 text-sm font-medium text-gray-700 hover:text-purple-600 transition-colors border border-gray-300 rounded-lg"
+                  >
+                    <LogIn className="w-4 h-4" />
+                    <span>Login</span>
+                  </Link>
+                  <Link
+                    to="/signup"
+                    className="flex items-center justify-center space-x-2 w-full px-4 py-2 text-sm font-medium bg-gradient-to-r from-blue-500 to-green-500 text-white rounded-lg hover:from-blue-600 hover:to-green-600 transition-all"
+                  >
+                    <UserPlus className="w-4 h-4" />
+                    <span>Sign Up</span>
+                  </Link>
+                </div>
+              )}
             </div>
           </motion.div>
         )}
