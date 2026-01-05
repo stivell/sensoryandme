@@ -1,6 +1,6 @@
 import React, { createContext, useState, useContext, ReactNode, useEffect } from 'react';
 import { Class, Location } from '../types';
-import { supabase, isDemoMode } from '../lib/supabase';
+import { supabase } from '../lib/supabase';
 import { mockClasses, mockLocations } from '../data/mockData';
 
 interface AppContextProps {
@@ -33,15 +33,6 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        if (isDemoMode) {
-          // Use mock data in demo mode
-          console.log('Running in demo mode with mock data');
-          setLocations(mockLocations);
-          setClasses(mockClasses);
-          setFilteredClasses(mockClasses);
-          return;
-        }
-
         // Fetch locations
         const { data: locationsData, error: locationsError } = await supabase
           .from('locations')
@@ -49,7 +40,6 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
 
         if (locationsError) {
           console.error('Error fetching locations:', locationsError);
-          // Fallback to mock data
           setLocations(mockLocations);
         } else {
           setLocations(locationsData || []);
@@ -62,7 +52,6 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
 
         if (classesError) {
           console.error('Error fetching classes:', classesError);
-          // Fallback to mock data
           setClasses(mockClasses);
           setFilteredClasses(mockClasses);
         } else {
@@ -71,7 +60,6 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
         }
       } catch (error) {
         console.error('Error fetching data:', error);
-        // Fallback to mock data
         setLocations(mockLocations);
         setClasses(mockClasses);
         setFilteredClasses(mockClasses);
