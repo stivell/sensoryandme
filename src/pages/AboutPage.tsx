@@ -204,8 +204,8 @@ const AboutPage: React.FC = () => {
           >
             <div className="md:flex">
               <div className="md:w-1/3">
-                <img 
-                  src="https://images.pexels.com/photos/8613089/pexels-photo-8613089.jpeg" 
+                <img
+                  src="/images/20250117_172704.jpg"
                   alt="Founder"
                   className="w-full h-64 md:h-full object-cover"
                 />
