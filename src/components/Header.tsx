@@ -33,6 +33,7 @@ const Header = () => {
     { name: 'Locations', path: '/locations' },
     { name: 'About', path: '/about' },
     { name: 'Contact', path: '/contact' },
+    { name: 'Admin', path: '/admin' },
   ];
 
   return (
