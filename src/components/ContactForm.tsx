@@ -40,13 +40,32 @@ const ContactForm: React.FC = () => {
         throw insertError;
       }
 
-      setIsSubmitted(true);
-      setFormData({
-        name: '',
-        email: '',
-        subject: '',
-        message: ''
+      const { data: { session } } = await supabase.auth.getSession();
+      const anonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+      const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+
+      const emailResponse = await fetch(`${supabaseUrl}/functions/v1/send-contact-email`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${session?.access_token ?? anonKey}`,
+          'Apikey': anonKey,
+        },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          subject: formData.subject,
+          message: formData.message,
+        }),
       });
+
+      if (!emailResponse.ok) {
+        const errData = await emailResponse.json().catch(() => ({}));
+        console.error('Email send failed:', errData);
+      }
+
+      setIsSubmitted(true);
+      setFormData({ name: '', email: '', subject: '', message: '' });
 
       setTimeout(() => {
         setIsSubmitted(false);
