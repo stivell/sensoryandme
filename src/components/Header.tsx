@@ -38,7 +38,7 @@ const Header = () => {
   const navItems = [
     { name: 'Home', path: '/' },
     { name: 'Classes', path: '/classes' },
-    { name: 'Locations', path: '/locations' },
+    { name: 'Therapy Services', path: '/therapy-services' },
     { name: 'About', path: '/about' },
     { name: 'Contact', path: '/contact' },
   ];
@@ -81,7 +81,7 @@ const Header = () => {
         </Link>
 
         {/* Desktop Navigation */}
-        <nav className="hidden md:flex space-x-6 items-center">
+        <nav className="hidden md:flex space-x-6 items-center ml-12">
           {navItems.map((item) => (
             <Link
               key={item.name}

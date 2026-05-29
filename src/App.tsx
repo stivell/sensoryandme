@@ -17,6 +17,7 @@ import LoginPage from './pages/LoginPage';
 import SignupPage from './pages/SignupPage';
 import PrivacyPolicyPage from './pages/PrivacyPolicyPage';
 import TermsOfServicePage from './pages/TermsOfServicePage';
+import TherapyServicesPage from './pages/TherapyServicesPage';
 import NotFoundPage from './pages/NotFoundPage';
 
 function App() {
@@ -31,6 +32,7 @@ function App() {
             <Route path="/classes/:id" element={<ClassDetailPage />} />
             <Route path="/locations" element={<LocationsPage />} />
             <Route path="/locations/:id" element={<LocationDetailPage />} />
+            <Route path="/therapy-services" element={<TherapyServicesPage />} />
             <Route path="/about" element={<AboutPage />} />
             <Route path="/contact" element={<ContactPage />} />
             <Route path="/booking-confirmation" element={<BookingConfirmationPage />} />

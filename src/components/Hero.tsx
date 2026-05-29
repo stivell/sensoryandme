@@ -15,8 +15,9 @@ const Hero: React.FC = () => {
             className="md:w-1/2 mb-10 md:mb-0 md:pr-8"
           >
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-4 leading-tight">
-              <span className="text-purple-600">Purposeful Play</span> for 
-              <span className="text-green-600"> Every Child</span>
+              <span className="text-green-600">Purposeful Therapy</span>
+              <span className="text-purple-600"> and Play</span>
+              <span className="text-green-600"> for Every Child</span>
             </h1>
             <p className="text-xl text-gray-700 mb-8 max-w-lg">
               Our AI-Powered Structured Play Groups provide an inclusive environment
@@ -27,8 +28,8 @@ const Hero: React.FC = () => {
                 Book a Class
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Link>
-              <Link to="/about" className="btn-outline">
-                Learn More
+              <Link to="/therapy-services" className="btn-outline">
+                Therapy Services
               </Link>
             </div>
           </motion.div>
