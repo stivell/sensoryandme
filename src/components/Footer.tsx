@@ -75,7 +75,7 @@ const Footer: React.FC = () => {
                 <motion.a 
                   whileHover={{ scale: 1.1, rotate: -5 }}
                   whileTap={{ scale: 0.95 }}
-                  href="mailto:info@learnbysensory.com" 
+                  href="mailto:jysseka@learnbysensory.com"
                   className="bg-gradient-to-br from-blue-500 to-purple-600 p-3 rounded-xl hover:shadow-lg transition-all duration-300 group"
                   aria-label="Email"
                 >
@@ -182,7 +182,7 @@ const Footer: React.FC = () => {
                 </div>
                 <div>
                   <p className="font-medium text-white">Email Us</p>
-                  <p className="text-gray-300 text-sm">info@learnbysensory.com</p>
+                  <p className="text-gray-300 text-sm">jysseka@learnbysensory.com</p>
                 </div>
               </div>
             </div>

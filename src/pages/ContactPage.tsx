@@ -42,10 +42,10 @@ const ContactPage: React.FC = () => {
                   <div>
                     <p className="font-medium text-gray-800">Email</p>
                     <a 
-                      href="mailto:info@learnbysensory.com" 
+                      href="mailto:jysseka@learnbysensory.com"
                       className="text-purple-600 hover:text-purple-700 transition-colors"
                     >
-                      info@learnbysensory.com
+                      jysseka@learnbysensory.com
                     </a>
                   </div>
                 </div>
