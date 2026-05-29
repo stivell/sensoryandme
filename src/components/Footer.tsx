@@ -161,8 +161,8 @@ const Footer: React.FC = () => {
                   <MapPin className="h-5 w-5 text-purple-400" />
                 </div>
                 <div>
-                  <p className="font-medium text-white">Visit Us</p>
-                  <p className="text-gray-300 text-sm">12334 SilverSpring Place, Portland, OR</p>
+                  <p className="font-medium text-white">Serving Counties</p>
+                  <p className="text-gray-300 text-sm">Silver Spring and surrounding areas</p>
                 </div>
               </div>
               
