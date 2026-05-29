@@ -162,9 +162,8 @@ const PrivacyPolicyPage: React.FC = () => {
                 <div className="bg-gray-50 rounded-lg p-4">
                   <p className="text-gray-700">
                     <strong>Learn by Sensory</strong><br />
-                    Email: privacy@learnbysensory.com<br />
-                    Phone: (503) 555-1234<br />
-                    Address: 12334 SilverSpring Place, Portland, OR 97201
+                    Email: jysseka@learnbysensory.com<br />
+                    Address: Silver Spring, Maryland
                   </p>
                 </div>
               </div>

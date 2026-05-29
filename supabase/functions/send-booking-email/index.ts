@@ -57,14 +57,14 @@ Deno.serve(async (req: Request) => {
 
     await sgMail.send({
       to,
-      from: "bookings@learnbysensory.com",
+      from: "jysseka@learnbysensory.com",
       templateId: "d-123456789",
       dynamicTemplateData: templateData,
     });
 
     await sgMail.send({
       to: "Jysseka@learnbysensory.com",
-      from: "bookings@learnbysensory.com",
+      from: "jysseka@learnbysensory.com",
       templateId: "d-987654321",
       dynamicTemplateData: {
         ...templateData,

@@ -66,10 +66,9 @@ const ContactPage: React.FC = () => {
                 <div className="flex items-start">
                   <MapPin className="h-5 w-5 text-purple-500 mt-1 mr-3 flex-shrink-0" />
                   <div>
-                    <p className="font-medium text-gray-800">Main Location</p>
+                    <p className="font-medium text-gray-800">Mailing Location</p>
                     <p className="text-gray-600">
-                      12334 SilverSpring Place<br />
-                      Portland, OR 97201
+                      Silver Spring, Maryland
                     </p>
                   </div>
                 </div>
